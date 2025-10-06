@@ -1,0 +1,36 @@
+# === Carpetas del entorno virtual ===
+venv/
+.env/
+__pycache__/
+*.pyc
+
+# === Archivos de configuración locales ===
+.vscode/
+.idea/
+*.code-workspace
+
+# === Archivos del sistema ===
+.DS_Store
+Thumbs.db
+
+# === Archivos de descargas o datos generados ===
+downloads/
+data/
+logs/
+output/
+*.bib
+
+# === Archivos de dependencias o instalación ===
+*.log
+*.tmp
+*.bak
+
+# === Archivos específicos de Selenium / Chrome ===
+chromedriver.exe
+geckodriver.exe
+webdriver.log
+user-data-dir/
+C:\Users\hulbe\ChromeProfiles\scraper_profile/
+
+# === Archivos de configuración del sistema ===
+pyvenv.cfg
