@@ -1,132 +1,47 @@
-# ==============================
-# 🧠 BIBLIOMETRIC APP - .gitignore
-# ==============================
-
-# === Entornos virtuales y dependencias ===
-venv/
-.env/
+# Entorno virtual
 .venv/
-env/
+venv/
 ENV/
-__pycache__/
-*.py[cod]
-*$py.class
-pyvenv.cfg
-.pdm-python
-.pdm-build/
-.pixi
-__pypackages__/
+env/
 
-# === Archivos temporales o de compilación ===
-*.pyc
-*.pyo
-*.pyd
-*.tmp
-*.bak
-*.log
-*.spec
-*.manifest
-*.dll
-*.so
-*.dylib
-*.class
-*.o
-*.a
-
-# === Archivos del sistema ===
+# Archivos de sistema
 .DS_Store
 Thumbs.db
 
-# === Configuración de editores ===
-.vscode/
-.idea/
-*.code-workspace
-.spyderproject
-.spyproject
-.ropeproject
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
 
-# === Configuración del sistema ===
-.Python
-.envrc
+# Logs
+*.logs
 
-# === Archivos generados por pruebas o cobertura ===
-.tox/
-.nox/
-.coverage
-.coverage.*
-.cache/
-pytest_cache/
-htmlcov/
-nosetests.xml
-coverage.xml
-*.cover
-*.py.cover
-.hypothesis/
-.pytest_cache/
-cover/
+# Datos / descargas
+downloads/
+data/raw/
+# si quieres ignorar processed también:
+# data/processed/
 
-# === Archivos de documentación o build ===
+# Entornos / secretos
+.env
+.env.local
+.env.*.local
+.env.* 
+secrets.*
+*.pem
+*.key
+
+# Selenium / webdriver caches
+geckodriver.log
+chromedriver.log
+
+# OS generated
+Desktop.ini
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Build / dist
 build/
 dist/
-develop-eggs/
-eggs/
-.eggs/
-parts/
-sdist/
-var/
-wheels/
-share/python-wheels/
 *.egg-info/
-.installed.cfg
-*.egg
-MANIFEST
-docs/_build/
-site/
-
-# === Archivos de descargas o datos generados ===
-downloads/
-data/
-logs/
-output/
-*.bib
-
-# === Archivos de drivers Selenium ===
-chromedriver.exe
-geckodriver.exe
-webdriver.log
-user-data-dir/
-# Perfil de Chrome local (ajusta según tu ruta)
-C:\Users\hulbe\ChromeProfiles\scraper_profile/
-
-# === Archivos de configuración o control de paquetes ===
-Pipfile
-Pipfile.lock
-poetry.lock
-poetry.toml
-pdm.lock
-pdm.toml
-pixi.lock
-uv.lock
-.pybuilder/
-target/
-
-# === Notebooks y análisis ===
-.ipynb_checkpoints/
-profile_default/
-ipython_config.py
-
-# === Configuración de herramientas de análisis ===
-.mypy_cache/
-.pyre/
-.pytype/
-.dmypy.json
-.dmypy.json
-.ruff_cache/
-
-# === Otros editores o herramientas ===
-.cursorignore
-.cursorindexingignore
-.abstra/
-__marimo__/
-marimo/_static/
-marimo/_lsp/
