@@ -47,7 +47,7 @@ def comparar_articulos_sbert(s1, s2):
     """"
     - Modelo más grande y preciso, entrenado para similitud semántica.
     - Captura relaciones semánticas profundas.
-    - *Segun lo investigado* se utiliza para tareas de semantic textual similarity (STS).
+    - Segun lo investigado se utiliza para tareas de semantic textual similarity (STS).
     """
     # Usamos el mismo modelo potente
     sbert_model = SentenceTransformer("sentence-transformers/all-mpnet-base-v2")
