@@ -100,7 +100,7 @@ def precision_nuevos_terminos(new_terms, keywords, threshold=60):
 Función para generar la gráfica de frecuencia de los keywords 'Concepts of Generative AI in Education'
 en los abstracts de los articulos
 """
-def dibujar_grafica_frecuencia_keywords(freqs, output_path="outputs/keywords_analizer/keywords_freq.png"):
+def dibujar_grafica_frecuencia_keywords(freqs, output_path="salidas/analizador_palabras_clave/frecuencia_keywords.png"):
     # Crear la carpeta si no existe
     os.makedirs(os.path.dirname(output_path), exist_ok=True)
 
@@ -131,7 +131,7 @@ Para cada keywords nuevo se muestran 2 tipos de información clave:
 - Frecuencia de aparición en los abstracts
 - TF-IDF: qué tan representativa es la palabra o término dentro de el conjunto de documentos (abstracts)
 """
-def dibujar_grafica_nuevos_terminos_tfidf_vs_freq(abstracts, top_terms, output_path="outputs/keywords_analizer/new_top_keywords_.png"):
+def dibujar_grafica_nuevos_terminos_tfidf_vs_freq(abstracts, top_terms, output_path="salidas/analizador_palabras_clave/nuevos_terminos_tfidf_vs_freq.png"):
     os.makedirs(os.path.dirname(output_path), exist_ok=True)
 
     # Calcular frecuencias de cada termino en los abstracts
@@ -176,7 +176,7 @@ def dibujar_grafica_nuevos_terminos_tfidf_vs_freq(abstracts, top_terms, output_p
 Función para visualizar la precisión de los nuevos keywords con los keywords originales:
 Determina qué tan precisas son las nuevas palabras.
 """
-def dibujar_grafica_precison_nuevos_terminos(precision, common_terms, output_path="outputs/keywords_analizer/precision_terms.png"):
+def dibujar_grafica_precison_nuevos_terminos(precision, common_terms, output_path="salidas/analizador_palabras_clave/precision_de_nuevos_terminos.png"):
     fig, axes = plt.subplots(1, 2, figsize=(14,6))
     
     # --- 1. Gauge chart para precisión ---
@@ -215,28 +215,16 @@ if __name__ == "__main__":
     freqs = calcular_frecuencia_keywords(abstracts, keywords)
     # Generar gráfica
     dibujar_grafica_frecuencia_keywords(freqs)
-    """"
-    print("\n=== Frecuencia de keywords ===")
-    for kw, c in freqs.items(): 
-        print(f"{kw}: {c}")
-    """
+   
 
     # --- Términos principales (TF-IDF) ---
     top_terms = extraer_top_terms(abstracts, top_n=15)
     # Generar gráfica
     dibujar_grafica_nuevos_terminos_tfidf_vs_freq(abstracts, top_terms)
-    """
-    print("\n=== Top términos por TF-IDF ===")
-    for term, score in top_terms:
-        print(f"{term}: {score:.4f}")
-    """
+  
 
     # --- Precisión de nuevos términos vs keywords ---
     precision, overlap = precision_nuevos_terminos(top_terms, keywords)
     # Generar gráfica
     dibujar_grafica_precison_nuevos_terminos(precision, overlap)
-    """"
-    print("\n=== Precisión de nuevos términos ===")
-    print(f"Precisión: {precision:.2f}")
-    print(f"Términos en común: {overlap}")
-    """
+   
