@@ -159,7 +159,7 @@ def scrape_ieee_bibtex_chrome(navegador, espera, carpeta_descargas: str, pagina:
 
 def ejecutar():
     try:
-        inicio = int(input("Página de Inicio (e.g. 1): "))
+        inicio = int(input("Página de Inicio (e.g. 0): "))
         cantidad = int(input("¿Cuántas páginas para el scrape?: "))
 
         carpeta_descargas = str(Path("downloads").resolve())
