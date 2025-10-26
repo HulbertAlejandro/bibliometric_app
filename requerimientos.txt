@@ -3,3 +3,4 @@ pandas
 matplotlib
 bibtexparser
 undetected_chromedriver
+rapidfuzz
