@@ -5,7 +5,7 @@ Script para fusionar entradas bibliográficas de IEEE y una o más carpetas ACM.
     * .bib fusionado
     * Reporte CSV con el mapeo (tipo de match, score, archivos fuente)
 Uso:
-    python utils/unir_bib.py --ieee-dir data/raw/IEEE --acm-dirs data/raw/ACM,data/raw/ACM2,data/raw/ACM3 --out-dir data/processed
+    python utils/unir_bib.py --ieee-dir data/raw/IEEE --acm-dirs data/raw/ACM3 --out-dir data/processed
 """
 
 from __future__ import annotations
