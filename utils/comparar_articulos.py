@@ -29,7 +29,7 @@ def dice_sim(s1, s2):
 def tfidf_cosine(s1, s2): 
     vec = TfidfVectorizer().fit([s1, s2])
     tfidf = vec.transform([s1, s2])
-    return cosine_similarity(tfidf[0], tfidf[1])[0][0]
+    return float(cosine_similarity(tfidf)[0][1])
 
 def sbert_cosine(s1, s2):
     """"
@@ -39,9 +39,9 @@ def sbert_cosine(s1, s2):
     """
     model = SentenceTransformer("all-MiniLM-L6-v2") # Carga un modelo SBERT ligero
     # Genera (vectores) para los abstracts s1 y s2
-    emb = model.encode([s1, s2])
+    emb = model.encode([s1, s2], convert_to_numpy=True)
     # Calcula la similitud coseno
-    return cosine_similarity([emb[0]], [emb[1]])[0][0]
+    return float(cosine_similarity(emb)[0][1])
 
 def comparar_articulos_sbert(s1, s2):
     """"
@@ -54,7 +54,7 @@ def comparar_articulos_sbert(s1, s2):
     # Generamos (vectores) de los dos textos
     embeddings = sbert_model.encode([s1, s2], convert_to_numpy=True)
     # Calculamos la similitud coseno entre los abstracts
-    sim = cosine_similarity([embeddings[0]], [embeddings[1]])[0][0]
+    sim = float(cosine_similarity(embeddings)[0][1])
     return sim
 
 """"
@@ -64,11 +64,11 @@ La comparación se hace con todas la funciones requeridas
     :param article_ids: lista de IDs a comparar, ej. ["merged1", "merged2"]
 """
 def comparar_articulos(abstracts, article_ids):
-    n = len(ids)
+    n = len(article_ids)
     for i in range(n):
         for j in range(i+1, n):
-            s1, s2 = abstracts[ids[i]], abstracts[ids[j]]
-            print(f"\nComparando {ids[i]} vs {ids[j]}:")
+            s1, s2 = abstracts[article_ids[i]], abstracts[article_ids[j]]
+            print(f"\nComparando {article_ids[i]} vs {article_ids[j]}:")
             print(" Levenshtein:", levenshtein_sim(s1, s2))
             print(" Jaccard:", jaccard_sim(s1, s2))
             print(" Dice:", dice_sim(s1, s2))
