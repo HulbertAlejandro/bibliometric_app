@@ -309,7 +309,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--ieee-dir", default=str(pr / "data" / "raw" / "IEEE"), help="Carpeta con archivos .bib IEEE")
     parser.add_argument(
         "--acm-dirs",
-        default=str(pr / "data" / "raw" / "ACM3"),
+        default=str(pr / "data" / "raw" / "ACM"),
         help="Carpeta(s) con archivos .bib ACM, separadas por comas (ej: data/raw/ACM,data/raw/ACM2)",
     )
     parser.add_argument("--out-dir", default=str(pr / "data" / "processed"), help="Carpeta de salida")

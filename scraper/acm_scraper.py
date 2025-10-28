@@ -129,7 +129,7 @@ if __name__ == "__main__":
         carpeta_descargas = str(Path("downloads").resolve())
 
         # ⚙️ Ajusta esta ruta según tu perfil de Chrome
-        ruta_perfil = r"C:\Users\hulbe\ChromeProfiles\scraper_profile"
+        ruta_perfil = r"C:\Users\Mauricio Rios\ChromeProfiles\scraper_profile"
 
         opciones = configurar_navegador(carpeta_descargas, ruta_perfil)
 
