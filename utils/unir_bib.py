@@ -309,15 +309,15 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--ieee-dir", default=str(pr / "data" / "raw" / "IEEE"), help="Carpeta con archivos .bib IEEE")
     parser.add_argument(
         "--acm-dirs",
-        default=str(pr / "data" / "raw" / "ACM"),
-        help="Carpeta(s) con archivos .bib ACM, separadas por comas (ej: data/raw/ACM,data/raw/ACM2)",
+        default="data/raw/ACM,data/raw/ACM2,data/raw/ACM3",
+        help="Carpeta(s) con archivos .bib ACM, separadas por comas",
     )
+
     parser.add_argument("--out-dir", default=str(pr / "data" / "processed"), help="Carpeta de salida")
     parser.add_argument("--out-bib", default="merged.bib", help="Nombre del .bib de salida")
     parser.add_argument("--out-csv", default="merge_map.csv", help="CSV con el mapa de merges")
     parser.add_argument("--title-threshold", type=int, default=88, help="Umbral (0-100) para fuzzy title match")
     return parser.parse_args()
-
 
 def main():
     """
