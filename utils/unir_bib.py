@@ -283,7 +283,7 @@ def escribir_archivos_bib_y_csv(out_dir: Path, merged_results: List[Dict], mappi
     bibdb.entries = out_entries
     writer = BibTexWriter()
     writer.indent = "  "
-    writer.order_entries_by = None
+    writer.order_entries_by = ('ID',)
     out_bib_path = out_dir / out_bib
     out_bib_path.write_text(writer.write(bibdb), encoding="utf-8")
     logger.info("Bib guardado en: %s", out_bib_path)
@@ -309,9 +309,10 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--ieee-dir", default=str(pr / "data" / "raw" / "IEEE"), help="Carpeta con archivos .bib IEEE")
     parser.add_argument(
         "--acm-dirs",
-        default=str(pr / "data" / "raw" / "ACM3"),
-        help="Carpeta(s) con archivos .bib ACM, separadas por comas (ej: data/raw/ACM,data/raw/ACM2)",
+        default="data/raw/ACM,data/raw/ACM2,data/raw/ACM3",
+        help="Carpeta(s) con archivos .bib ACM, separadas por comas",
     )
+
     parser.add_argument("--out-dir", default=str(pr / "data" / "processed"), help="Carpeta de salida")
     parser.add_argument("--out-bib", default="merged.bib", help="Nombre del .bib de salida")
     parser.add_argument("--out-csv", default="merge_map.csv", help="CSV con el mapa de merges")

@@ -3,6 +3,7 @@ from collections import Counter
 import re
 from sklearn.feature_extraction.text import TfidfVectorizer
 import numpy as np
+from scipy.sparse import csr_matrix
 from rapidfuzz import fuzz
 import os
 import matplotlib.pyplot as plt
@@ -62,7 +63,12 @@ def extraer_top_terms(abstracts, top_n=15):
 
     tfidf = vec.fit_transform(texts) # Transforma los textos en una matriz TF-IDF
 
-    scores = np.asarray(tfidf.sum(axis=0)).ravel()  # Calcula la suma de los pesos TF-IDF de cada término en todos los documentos
+    # Asegurar que es una matriz CSR y calcular la suma
+    if not isinstance(tfidf, csr_matrix):
+        tfidf = csr_matrix(tfidf)
+    
+    # Calcular la suma y convertir a array
+    scores = np.asarray(tfidf.sum(axis=0))[0]
 
     terms = vec.get_feature_names_out() # Obtiene la lista de términos correspondientes a las columnas de la matriz TF-IDF
 
