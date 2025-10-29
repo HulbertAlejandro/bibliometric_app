@@ -35,7 +35,7 @@ def configurar_chrome(carpeta_descargas: str, ruta_perfil: str | None = None):
 
     return opciones
 
-def scrape_ieee_bibtex_chrome(navegador, espera, carpeta_descargas: str, pagina: int):
+def extraer_ieee_bibtex_chrome(navegador, espera, carpeta_descargas: str, pagina: int):
     """
     Abre IEEE Xplore en Chrome, acepta cookies, selecciona todos, exporta citaciones BibTeX con Abstract,
     y mueve el .bib a data/raw/IEEE con timestamp.
@@ -173,7 +173,7 @@ def ejecutar():
 
         for i in range(inicio, inicio + cantidad):
             print(f"\n>>> Scraping página {i}")
-            scrape_ieee_bibtex_chrome(navegador, espera, carpeta_descargas, pagina=i)
+            extraer_ieee_bibtex_chrome(navegador, espera, carpeta_descargas, pagina=i)
             time.sleep(3)
 
         input("Presiona Enter para cerrar el navegador...")
