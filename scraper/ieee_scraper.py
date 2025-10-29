@@ -38,9 +38,9 @@ def configurar_chrome(carpeta_descargas: str, ruta_perfil: str | None = None):
 def extraer_ieee_bibtex_chrome(navegador, espera, carpeta_descargas: str, pagina: int):
     """
     Abre IEEE Xplore en Chrome, acepta cookies, selecciona todos, exporta citaciones BibTeX con Abstract,
-    y mueve el .bib a data/raw/IEEE con timestamp.
+    y mueve el .bib a static/data/raw/IEEE con timestamp.
     """
-    carpeta_salida = Path("data/raw/IEEE")
+    carpeta_salida = Path("static/data/raw/IEEE")
     Path(carpeta_descargas).mkdir(parents=True, exist_ok=True)
     carpeta_salida.mkdir(parents=True, exist_ok=True)
 

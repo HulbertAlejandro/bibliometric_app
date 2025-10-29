@@ -81,8 +81,8 @@ def convertir_a_denso(X):
 def main_analizador_dendrogramas():
     # Definir rutas del proyecto
     raiz = Path(__file__).resolve().parents[2]
-    ruta_bib = raiz / "data" / "processed" / "merged.bib"
-    dir_salida = raiz / "salidas" / "agrupamiento_y_dendrogramas"
+    ruta_bib = raiz / "static" / "data" / "processed" / "merged.bib"
+    dir_salida = raiz / "static" / "salidas" / "agrupamiento_y_dendrogramas"
     dir_salida.mkdir(parents=True, exist_ok=True)
 
     # --- 1️⃣ Cargar y preprocesar abstracts ---

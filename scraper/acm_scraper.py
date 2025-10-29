@@ -13,13 +13,13 @@ def extraer_acm_bibtex(navegador, espera, carpeta_descargas, pagina_inicio: int,
     """
     Extrae artículos de la biblioteca digital de ACM y descarga las citas en formato BibTeX.
     """
-    carpeta_salida = Path("data/raw/ACM")
+    carpeta_salida = Path("static/data/raw/ACM")
     Path(carpeta_descargas).mkdir(parents=True, exist_ok=True)
     carpeta_salida.mkdir(parents=True, exist_ok=True)
 
     # Ir a la página de resultados de ACM
     if primera_pagina:
-        url = f"https://dl.acm.org/action/doSearch?AllField=generative+artificial+intelligence&startPage={pagina_inicio}&pageSize=50"
+        url = f"https://dl.acm.org/action/doSearch?AllField=generative+artificial+intelligence&startPage={pagina_inicio}&pageSize=100&sortBy=relevance"
         navegador.get(url)
 
     try:

@@ -10,7 +10,7 @@ import argparse
 Ejemplo de entrada:
 python utils/comparar_articulos.py --compare_ids merged1,merged2
 """
-def cargar_bib(path="data/processed/merged.bib"):
+def cargar_bib(path="static/data/processed/merged.bib"):
     with open(path, encoding="utf-8") as f:
         db = bibtexparser.load(f)
         return {entry["ID"]: entry.get("abstract", "") for entry in db.entries}
@@ -65,16 +65,19 @@ La comparación se hace con todas la funciones requeridas
 """
 def comparar_articulos(abstracts, article_ids):
     n = len(article_ids)
+    output = []
     for i in range(n):
         for j in range(i+1, n):
             s1, s2 = abstracts[article_ids[i]], abstracts[article_ids[j]]
-            print(f"\nComparando {article_ids[i]} vs {article_ids[j]}:")
-            print(" Levenshtein:", levenshtein_sim(s1, s2))
-            print(" Jaccard:", jaccard_sim(s1, s2))
-            print(" Dice:", dice_sim(s1, s2))
-            print(" TF-IDF Cosine:", tfidf_cosine(s1, s2))
-            print(" SBERT Cosine 1:", sbert_cosine(s1, s2))
-            print(" SBERT Cosine 2:", comparar_articulos_sbert(s1, s2))
+            section = [f""]
+            section.append(f" Levenshtein: {levenshtein_sim(s1, s2)}")
+            section.append(f" Jaccard: {jaccard_sim(s1, s2)}")
+            section.append(f" Dice: {dice_sim(s1, s2)}")
+            section.append(f" TF-IDF Cosine: {tfidf_cosine(s1, s2)}")
+            section.append(f" SBERT Cosine 1: {sbert_cosine(s1, s2)}")
+            section.append(f" SBERT Cosine 2: {comparar_articulos_sbert(s1, s2)}")
+            output.append('\n'.join(section))
+    return '\n\n'.join(output) if output else "Sin comparaciones calculadas."
             
 # main
 if __name__ == "__main__":
