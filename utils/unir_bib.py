@@ -5,7 +5,7 @@ Script para fusionar entradas bibliográficas de IEEE y una o más carpetas ACM.
     * .bib fusionado
     * Reporte CSV con el mapeo (tipo de match, score, archivos fuente)
 Uso:
-    python utils/unir_bib.py --ieee-dir data/raw/IEEE --acm-dirs data/raw/ACM3 --out-dir data/processed
+    python utils/unir_bib.py --ieee-dir data/raw/IEEE --acm-dirs data/raw/ACM --out-dir data/processed
 """
 
 from __future__ import annotations
@@ -271,6 +271,7 @@ def escribir_archivos_bib_y_csv(out_dir: Path, merged_results: List[Dict], mappi
     Escribe el archivo .bib fusionado y el reporte CSV de mapeo.
     """
     out_dir.mkdir(parents=True, exist_ok=True)
+    
     # Asigna IDs únicos a cada entrada fusionada
     out_entries = []
     for idx, e in enumerate(merged_results, start=1):
@@ -283,7 +284,12 @@ def escribir_archivos_bib_y_csv(out_dir: Path, merged_results: List[Dict], mappi
     bibdb.entries = out_entries
     writer = BibTexWriter()
     writer.indent = "  "
-    writer.order_entries_by = None
+    
+    try:
+        writer.order_entries_by = None
+    except AttributeError:
+        pass
+    
     out_bib_path = out_dir / out_bib
     out_bib_path.write_text(writer.write(bibdb), encoding="utf-8")
     logger.info("Bib guardado en: %s", out_bib_path)
