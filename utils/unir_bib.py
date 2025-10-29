@@ -285,10 +285,9 @@ def escribir_archivos_bib_y_csv(out_dir: Path, merged_results: List[Dict], mappi
     writer = BibTexWriter()
     writer.indent = "  "
     
-    try:
-        writer.order_entries_by = None
-    except AttributeError:
-        pass
+    # Ordenar explícitamente por el campo ID (merged1, merged2, ...).
+    # BibTexWriter.order_entries_by espera una tupla de campos, no None.
+    writer.order_entries_by = ('ID',)
     
     out_bib_path = out_dir / out_bib
     out_bib_path.write_text(writer.write(bibdb), encoding="utf-8")
