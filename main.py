@@ -11,7 +11,7 @@ def run_acm_scraper():
         start = int(input("Página de inicio (ej: 0): "))
         count = int(input("¿Cuántas páginas desea scrapear?: "))
         for i in range(start, start + count):
-            print(f"\n>>> Scraping page {i}")
+            print(f"\n-> Scraping page {i}")
             extraer_acm_bibtex(i)
             time.sleep(3)  # evita sobrecargar el servidor
     except ValueError:
@@ -23,7 +23,7 @@ def run_ieee_scraper():
         count = int(input("¿Cuántas páginas desea scrapear?: "))
 
         for i in range(start, start + count):
-            print(f"\n>>> Scraping página {i}")
+            print(f"\n-> Scraping página {i}")
             extraer_ieee_bibtex_chrome(i)
             time.sleep(3)  # evita sobrecargar el servidor
 
