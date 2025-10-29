@@ -31,7 +31,7 @@ se traen en el formato:
         ...
     }
 """
-def cargar_bib(path="data/processed/merged.bib"):
+def cargar_bib(path="static/data/processed/merged.bib"):
     with open(path, encoding="utf-8") as f:
         db = bibtexparser.load(f)
         return {entry["ID"]: entry.get("abstract", "") for entry in db.entries}
@@ -106,7 +106,7 @@ def precision_nuevos_terminos(new_terms, keywords, threshold=60):
 Función para generar la gráfica de frecuencia de los keywords 'Concepts of Generative AI in Education'
 en los abstracts de los articulos
 """
-def dibujar_grafica_frecuencia_keywords(freqs, output_path="salidas/analizador_palabras_clave/frecuencia_keywords.png"):
+def dibujar_grafica_frecuencia_keywords(freqs, output_path="static/salidas/analizador_palabras_clave/frecuencia_keywords.png"):
     # Crear la carpeta si no existe
     os.makedirs(os.path.dirname(output_path), exist_ok=True)
 
@@ -137,7 +137,7 @@ Para cada keywords nuevo se muestran 2 tipos de información clave:
 - Frecuencia de aparición en los abstracts
 - TF-IDF: qué tan representativa es la palabra o término dentro de el conjunto de documentos (abstracts)
 """
-def dibujar_grafica_nuevos_terminos_tfidf_vs_freq(abstracts, top_terms, output_path="salidas/analizador_palabras_clave/nuevos_terminos_tfidf_vs_freq.png"):
+def dibujar_grafica_nuevos_terminos_tfidf_vs_freq(abstracts, top_terms, output_path="static/salidas/analizador_palabras_clave/nuevos_terminos_tfidf_vs_freq.png"):
     os.makedirs(os.path.dirname(output_path), exist_ok=True)
 
     # Calcular frecuencias de cada termino en los abstracts
@@ -182,7 +182,7 @@ def dibujar_grafica_nuevos_terminos_tfidf_vs_freq(abstracts, top_terms, output_p
 Función para visualizar la precisión de los nuevos keywords con los keywords originales:
 Determina qué tan precisas son las nuevas palabras.
 """
-def dibujar_grafica_precison_nuevos_terminos(precision, common_terms, output_path="salidas/analizador_palabras_clave/precision_de_nuevos_terminos.png"):
+def dibujar_grafica_precison_nuevos_terminos(precision, common_terms, output_path="static/salidas/analizador_palabras_clave/precision_de_nuevos_terminos.png"):
     fig, axes = plt.subplots(1, 2, figsize=(14,6))
     
     # --- 1. Gauge chart para precisión ---

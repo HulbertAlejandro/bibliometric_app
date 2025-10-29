@@ -253,10 +253,9 @@ class AnalizadorDeTendenciasTemporales:
             # Análisis de sentimiento
             sentiment = self.sentiment_analyzer.ensemble_sentiment(text)
             
-            # ✅ FIX: Usar el nombre de la columna original, no 'date'
             results.append({
                 'index': idx,
-                date_column: date,  # ✅ CAMBIO AQUÍ: usar date_column en lugar de 'date'
+                date_column: date,
                 'text_preview': self._safe_text_preview(text, 200),
                 **sentiment
             })
@@ -264,7 +263,7 @@ class AnalizadorDeTendenciasTemporales:
         print(f"✅ Completado: {total}/{total} documentos procesados")
         return pd.DataFrame(results)
     
-    def plot_sentiment_evolution(self, df_results, date_column='date', output_path='outputs/sentiment_analysis'):
+    def plot_sentiment_evolution(self, df_results, date_column='date', output_path='static/salidas/sentiment_analysis'):
         """
         Visualiza evolución temporal de sentimientos
         """
@@ -321,7 +320,7 @@ class AnalizadorDeTendenciasTemporales:
         print(f"✅ Visualizaciones guardadas en {output_path}")
 
 
-def main_sentiment_analysis(bibtex_file='data/processed/merged.bib'):
+def main_sentiment_analysis(bibtex_file='static/data/processed/merged.bib'):
     """
     Pipeline completo de análisis de sentimientos
     """

@@ -389,13 +389,13 @@ def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(
         description="Merge IEEE and ACM .bib files, eliminando duplicados y generando archivo de duplicados"
     )
-    parser.add_argument("--ieee-dir", default=str(pr / "data" / "raw" / "IEEE"), help="Carpeta con archivos .bib IEEE")
+    parser.add_argument("--ieee-dir", default=str(pr / "static" / "data" / "raw" / "IEEE"), help="Carpeta con archivos .bib IEEE")
     parser.add_argument(
         "--acm-dirs",
-        default="data/raw/ACM,data/raw/ACM2,data/raw/ACM3",
+        default="static/data/raw/ACM,static/data/raw/ACM2,static/data/raw/ACM3",
         help="Carpeta(s) con archivos .bib ACM, separadas por comas",
     )
-    parser.add_argument("--out-dir", default=str(pr / "data" / "processed"), help="Carpeta de salida")
+    parser.add_argument("--out-dir", default=str(pr / "static" / "data" / "processed"), help="Carpeta de salida")
     parser.add_argument("--out-bib", default="merged.bib", help="Nombre del .bib unificado")
     parser.add_argument("--out-dup-bib", default="duplicates.bib", help="Nombre del .bib de duplicados")
     parser.add_argument("--out-csv", default="merge_map.csv", help="CSV con el mapa de merges")

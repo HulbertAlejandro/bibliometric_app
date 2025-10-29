@@ -384,7 +384,7 @@ class GraphVisualizer:
         print(f"✅ Grafo interactivo guardado: {output_path}")
 
 
-def main_graph_analysis(bibtex_file='data/processed/merged.bib'):
+def main_graph_analysis(bibtex_file='static/data/processed/merged.bib'):
     """
     Pipeline completo de análisis de grafos
     """
@@ -411,7 +411,7 @@ def main_graph_analysis(bibtex_file='data/processed/merged.bib'):
             'year': [2022, 2023, 2024]
         })
     
-    output_dir = 'salidas/graph_analysis'
+    output_dir = 'static/salidas/graph_analysis'
     os.makedirs(output_dir, exist_ok=True)
     
     # 2. Construir grafo de co-autoría

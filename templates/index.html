@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Análisis Bibliométrico Dashboard</title>
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='css/style.css') }}"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+  </head>
+  <body>
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <div class="sidebar-header">
+        <div class="logo">
+          <i class="fas fa-book-reader"></i>
+          <h2>Bibliometrics</h2>
+        </div>
+      </div>
+
+      <nav class="sidebar-nav">
+        <a href="#scrapers" class="nav-item active" data-section="scrapers">
+          <i class="fas fa-spider"></i>
+          <span>Scrapers</span>
+        </a>
+        <a href="#merge" class="nav-item" data-section="merge">
+          <i class="fas fa-code-merge"></i>
+          <span>Merge BibTeX</span>
+        </a>
+        <a href="#compare" class="nav-item" data-section="compare">
+          <i class="fas fa-balance-scale"></i>
+          <span>Comparar</span>
+        </a>
+        <a href="#keywords" class="nav-item" data-section="keywords">
+          <i class="fas fa-key"></i>
+          <span>Keywords</span>
+        </a>
+        <a href="#dendrograms" class="nav-item" data-section="dendrograms">
+          <i class="fas fa-project-diagram"></i>
+          <span>Dendrogramas</span>
+        </a>
+        <!-- <a href="#bibliometric" class="nav-item" data-section="bibliometric">
+          <i class="fas fa-chart-line"></i>
+          <span>Bibliométrico</span>
+        </a>
+        <a href="#sentiment" class="nav-item" data-section="sentiment">
+          <i class="fas fa-smile"></i>
+          <span>Sentimientos</span>
+        </a>
+        <a href="#coauthorship" class="nav-item" data-section="coauthorship">
+          <i class="fas fa-users"></i>
+          <span>Co-autoría</span>
+        </a> -->
+      </nav>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+      <!-- Header -->
+      <header class="header">
+        <div class="header-left">
+          <button class="menu-toggle" id="menuToggle">
+            <i class="fas fa-bars"></i>
+          </button>
+          <h1 class="page-title">Panel de Análisis</h1>
+        </div>
+      </header>
+
+      <!-- Content Sections -->
+      <div class="content-wrapper">
+        <!-- Section: Scrapers -->
+        <section id="scrapers" class="content-section active">
+          <div class="section-header">
+            <h2>Web Scrapers</h2>
+            <p>Extracción de datos bibliográficos</p>
+          </div>
+
+          <div class="cards-grid">
+            <!-- ACM Scraper -->
+            <div class="card">
+              <div class="card-icon acm">
+                <i class="fas fa-download"></i>
+              </div>
+              <h3>ACM Digital Library</h3>
+              <p class="card-description">
+                Extrae referencias bibliográficas de ACM
+              </p>
+
+              <div class="form-group">
+                <label for="acm-start">Página inicial</label>
+                <input
+                  type="number"
+                  id="acm-start"
+                  class="form-input"
+                  min="0"
+                  value="0"
+                />
+              </div>
+
+              <div class="form-group">
+                <label for="acm-count">Cantidad de páginas</label>
+                <input
+                  type="number"
+                  id="acm-count"
+                  class="form-input"
+                  min="1"
+                  value="1"
+                />
+              </div>
+
+              <button class="btn btn-primary" onclick="runACMScraper()">
+                <i class="fas fa-play"></i> Ejecutar Scraper
+              </button>
+
+              <div id="acm-result" class="result-message"></div>
+            </div>
+
+            <!-- IEEE Scraper -->
+            <div class="card">
+              <div class="card-icon ieee">
+                <i class="fas fa-bolt"></i>
+              </div>
+              <h3>IEEE Xplore</h3>
+              <p class="card-description">
+                Extrae referencias bibliográficas de IEEE
+              </p>
+
+              <div class="form-group">
+                <label for="ieee-start">Página inicial</label>
+                <input
+                  type="number"
+                  id="ieee-start"
+                  class="form-input"
+                  min="0"
+                  value="0"
+                />
+              </div>
+
+              <div class="form-group">
+                <label for="ieee-count">Cantidad de páginas</label>
+                <input
+                  type="number"
+                  id="ieee-count"
+                  class="form-input"
+                  min="1"
+                  value="1"
+                />
+              </div>
+
+              <button class="btn btn-primary" onclick="runIEEEScraper()">
+                <i class="fas fa-play"></i> Ejecutar Scraper
+              </button>
+
+              <div id="ieee-result" class="result-message"></div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Section: Merge -->
+        <section id="merge" class="content-section">
+          <div class="section-header">
+            <h2>Fusión de Archivos BibTeX</h2>
+            <p>Combina múltiples archivos BibTeX en uno solo</p>
+          </div>
+
+          <div class="cards-grid single">
+            <div class="card card-merge">
+              <div class="card-icon merge">
+                <i class="fas fa-code-merge"></i>
+              </div>
+              <h3>Merge BibTeX Files</h3>
+              <p class="card-description">
+                Unifica todos los archivos .bib en un único archivo consolidado
+              </p>
+
+              <button class="btn btn-primary" onclick="runMerge()">
+                <i class="fas fa-compress-arrows-alt"></i> Fusionar Archivos
+              </button>
+
+              <div id="merge-result" class="result-message"></div>
+              <div id="merge-files-links" class="csv-container"></div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Section: Compare -->
+        <section id="compare" class="content-section">
+          <div class="section-header">
+            <h2>Comparar Artículos</h2>
+            <p>Análisis comparativo entre artículos</p>
+          </div>
+
+          <div class="cards-grid single">
+            <div class="card">
+              <div class="card-icon compare">
+                <i class="fas fa-balance-scale"></i>
+              </div>
+              <h3>Comparación de Artículos</h3>
+              <p class="card-description">
+                Compara artículos por sus IDs separados por comas
+              </p>
+
+              <div class="form-group">
+                <label for="article-ids"
+                  >IDs de artículos (ej: merged1,merged3)</label
+                >
+                <input
+                  type="text"
+                  id="article-ids"
+                  class="form-input"
+                  placeholder="merged1,merged2,merged3"
+                />
+              </div>
+
+              <button class="btn btn-primary" onclick="runComparison()">
+                <i class="fas fa-search"></i> Comparar
+              </button>
+
+              <div id="compare-result" class="result-message"></div>
+              <div id="compare-output" class="output-box"></div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Section: Keywords -->
+        <section id="keywords" class="content-section">
+          <div class="section-header">
+            <h2>Análisis de Palabras Clave</h2>
+            <p>Extracción y visualización de keywords</p>
+          </div>
+
+          <div class="cards-grid single">
+            <div class="card">
+              <div class="card-icon keywords">
+                <i class="fas fa-key"></i>
+              </div>
+              <h3>Keywords Analyzer</h3>
+              <p class="card-description">
+                Identifica y visualiza las palabras clave más relevantes
+              </p>
+
+              <button class="btn btn-primary" onclick="runKeywordsAnalysis()">
+                <i class="fas fa-chart-bar"></i> Analizar Keywords
+              </button>
+
+              <div id="keywords-result" class="result-message"></div>
+              <div id="keywords-output" class="gallery-grid"></div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Section: Dendrograms -->
+        <section id="dendrograms" class="content-section">
+          <div class="section-header">
+            <h2>Análisis de Similitud</h2>
+            <p>Clustering y dendrogramas de similitud</p>
+          </div>
+
+          <div class="cards-grid single">
+            <div class="card">
+              <div class="card-icon dendrograms">
+                <i class="fas fa-project-diagram"></i>
+              </div>
+              <h3>Dendrograms & Clustering</h3>
+              <p class="card-description">
+                Genera dendrogramas para visualizar similitudes entre artículos
+              </p>
+
+              <button
+                class="btn btn-primary"
+                onclick="runDendrogramsAnalysis()"
+              >
+                <i class="fas fa-sitemap"></i> Generar Dendrogramas
+              </button>
+
+              <div id="dendrograms-result" class="result-message"></div>
+              <div id="dendrograms-output" class="gallery-grid"></div>
+              <div id="dendrograms-csv" class="csv-container"></div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Section: Bibliometric -->
+        <!-- <section id="bibliometric" class="content-section">
+          <div class="section-header">
+            <h2>Información Bibliométrica</h2>
+            <p>Visualización de métricas y estadísticas</p>
+          </div>
+
+          <div class="cards-grid single">
+            <div class="card">
+              <div class="card-icon bibliometric">
+                <i class="fas fa-chart-line"></i>
+              </div>
+              <h3>Análisis Bibliométrico</h3>
+              <p class="card-description">
+                Genera visualizaciones completas de información bibliométrica
+              </p>
+
+              <button
+                class="btn btn-primary"
+                onclick="runBibliometricAnalysis()"
+              >
+                <i class="fas fa-analytics"></i> Generar Análisis
+              </button>
+
+              <div id="bibliometric-result" class="result-message"></div>
+              <div id="bibliometric-output" class="gallery-grid"></div>
+              <div id="bibliometric-pdf" class="pdf-container"></div>
+              <div id="bibliometric-csv" class="csv-container"></div>
+            </div>
+          </div>
+        </section> -->
+
+        <!-- Section: Sentiment Analysis -->
+        <!-- <section id="sentiment" class="content-section">
+          <h2>Análisis de Sentimientos</h2>
+          <button class="btn btn-primary" onclick="runSentimentAnalysis()">
+            Analizar Sentimientos
+          </button>
+          <div id="sentiment-result" class="result-message"></div>
+          <div id="sentiment-output"></div>
+        </section> -->
+
+        <!-- Section: Co-authorship Analysis -->
+        <!-- <section id="coauthorship" class="content-section">
+          <h2>Análisis de Co-autoría</h2>
+          <button class="btn btn-primary" onclick="runCoAuthorshipAnalysis()">
+            Analizar Co-autoría
+          </button>
+          <div id="coauthorship-result" class="result-message"></div>
+          <div id="coauthorship-output"></div>
+        </section> -->
+      </div>
+    </main>
+
+    <!-- Loading Overlay -->
+    <div id="loadingOverlay" class="loading-overlay">
+      <div class="spinner"></div>
+      <p>Procesando...</p>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+  </body>
+</html>
