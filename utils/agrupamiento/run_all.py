@@ -9,7 +9,7 @@ Salidas esperadas en data/processed/:
  - metricas_agrupamiento.csv
 
 Ejecución:
-    python -m utils.clustering.ejecutar_todo
+    python -m utils.agrupamiento.ejecutar_todo
 """
 
 from pathlib import Path

@@ -46,7 +46,7 @@ def scrape_ieee_bibtex_chrome(navegador, espera, carpeta_descargas: str, pagina:
 
     url = (
         "https://ieeexplore.ieee.org/search/searchresult.jsp"
-        "?newsearch=true&queryText=computational%20thinking"
+        "?newsearch=true&queryText=generative+artificial+intelligence"
         "&highlight=true&returnType=SEARCH&matchPubs=true"
         f"&rowsPerPage=100&pageNumber={pagina}&returnFacets=ALL"
     )
@@ -164,11 +164,11 @@ def ejecutar():
 
         carpeta_descargas = str(Path("downloads").resolve())
         # Ajusta esta ruta a tu perfil real de Chrome si quieres reutilizar sesión/cookies/captcha
-        ruta_perfil = r"C:\Users\hulbe\ChromeProfiles\scraper_profile"
+        ruta_perfil = str(Path.home() / "ChromeProfiles" / "scraper_profile")
 
         opciones = configurar_chrome(carpeta_descargas, ruta_perfil)
         print("Iniciando Chrome en modo sigiloso con perfil (si aplica)...")
-        navegador = uc.Chrome(options=opciones)
+        navegador = uc.Chrome(options=opciones, version_main=141)
         espera = WebDriverWait(navegador, 20)
 
         for i in range(inicio, inicio + cantidad):

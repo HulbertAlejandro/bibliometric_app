@@ -129,12 +129,12 @@ if __name__ == "__main__":
         carpeta_descargas = str(Path("downloads").resolve())
 
         # ⚙️ Ajusta esta ruta según tu perfil de Chrome
-        ruta_perfil = r"C:\Users\Mauricio Rios\ChromeProfiles\scraper_profile"
+        ruta_perfil = str(Path.home() / "ChromeProfiles" / "scraper_profile")
 
         opciones = configurar_navegador(carpeta_descargas, ruta_perfil)
 
         print("Iniciando navegador en modo sigiloso con perfil guardado...")
-        navegador = uc.Chrome(options=opciones)
+        navegador = uc.Chrome(options=opciones, version_main=141)
         espera = WebDriverWait(navegador, 20)
 
         # Recorrer las páginas
