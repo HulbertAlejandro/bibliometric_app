@@ -18,15 +18,19 @@ import csv
 import math
 import numpy as np
 from typing import Optional
+import sys
+
+# Se añade la carpeta raíz del proyecto al sys.path
+sys.path.append(str(Path(__file__).resolve().parents[2]))
 
 # --- Importaciones internas del proyecto ---
-from .reprocesar_y_vectorizar import (
+from utils.agrupamiento.reprocesar_y_vectorizar import (
     cargar_abstracts_desde_bib,
     preprocesar_abstracts,
     vectorizar_textos,
 )
 
-from .algoritmos_jerarquicos import (
+from utils.agrupamiento.algoritmos_jerarquicos import (
     ejecutar_average_linkage,
     ejecutar_complete_linkage,
     ejecutar_ward,
@@ -34,7 +38,7 @@ from .algoritmos_jerarquicos import (
 )
 
 # --- Configuración del logger ---
-logger = logging.getLogger("clustering.ejecucion")
+logger = logging.getLogger("agrupamiento.ejecucion")
 logging.basicConfig(level=logging.INFO, format="%(levelname)s: %(message)s")
 
 
@@ -74,11 +78,11 @@ def convertir_a_denso(X):
 # Función principal
 # ------------------------------------------------------------------------------------
 
-def main():
+def main_analizador_dendrogramas():
     # Definir rutas del proyecto
     raiz = Path(__file__).resolve().parents[2]
     ruta_bib = raiz / "data" / "processed" / "merged.bib"
-    dir_salida = raiz / "data" / "processed"
+    dir_salida = raiz / "salidas" / "agrupamiento_y_dendrogramas"
     dir_salida.mkdir(parents=True, exist_ok=True)
 
     # --- 1️⃣ Cargar y preprocesar abstracts ---
@@ -91,9 +95,9 @@ def main():
     claves, vectorizador, X = vectorizar_textos(abstracts_limpios)
 
     # --- 2️⃣ Ejecutar los tres algoritmos jerárquicos ---
-    Z_avg, coph_avg = ejecutar_average_linkage(X, claves, dir_salida, p=5)
-    Z_comp, coph_comp = ejecutar_complete_linkage(X, claves, dir_salida, p=5)
-    Z_ward, coph_ward, svd = ejecutar_ward(X, claves, dir_salida, n_componentes=2, p=5)
+    Z_avg, coph_avg = ejecutar_average_linkage(X, claves, dir_salida, p=10, max_label_len=60, orientacion="top")
+    Z_comp, coph_comp = ejecutar_complete_linkage(X, claves, dir_salida, p=5, max_label_len=60, orientacion="top")
+    Z_ward, coph_ward, svd = ejecutar_ward(X, claves, dir_salida, n_componentes=2, p=5, max_label_len=60, orientacion="top")
 
     # --- 3️⃣ Evaluar la calidad de agrupamientos con Silhouette ---
     rango_k = list(range(2, 9))
@@ -148,4 +152,4 @@ def main():
 # Ejecución directa
 # ------------------------------------------------------------------------------------
 if __name__ == "__main__":
-    main()
+    main_analizador_dendrogramas()

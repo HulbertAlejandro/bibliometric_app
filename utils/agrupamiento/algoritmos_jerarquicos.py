@@ -135,7 +135,7 @@ def _dibujar_dendrograma(
 # Algoritmos de agrupamiento jerárquico
 # -------------------------------------------------------------------
 
-def ejecutar_average_linkage(X, etiquetas: List[str], dir_salida: Path, p: int = 40):
+def ejecutar_average_linkage(X, etiquetas: List[str], dir_salida: Path, p: int = 40, max_label_len: int = 60, orientacion: str = "top"):
     """
     Ejecuta el algoritmo Average Linkage usando distancia coseno.
     """
@@ -146,13 +146,13 @@ def ejecutar_average_linkage(X, etiquetas: List[str], dir_salida: Path, p: int =
     logger.info("Average linkage: correlación cophenética = %.4f", corr)
 
     try:
-        _dibujar_dendrograma(Z, etiquetas, dir_salida / "dendrograma_average.png", p=p)
+        _dibujar_dendrograma(Z, etiquetas, dir_salida / "dendrograma_average.png", p=p, max_label_len=max_label_len, orientacion=orientacion)
     except Exception as ex:
         logger.warning("Error al generar dendrograma (average): %s", ex)
     return Z, corr
 
 
-def ejecutar_complete_linkage(X, etiquetas: List[str], dir_salida: Path, p: int = 40):
+def ejecutar_complete_linkage(X, etiquetas: List[str], dir_salida: Path, p: int = 40, max_label_len: int = 60, orientacion: str = "top"):
     """
     Ejecuta el algoritmo Complete Linkage usando distancia coseno.
     """
@@ -163,13 +163,12 @@ def ejecutar_complete_linkage(X, etiquetas: List[str], dir_salida: Path, p: int 
     logger.info("Complete linkage: correlación cophenética = %.4f", corr)
 
     try:
-        _dibujar_dendrograma(Z, etiquetas, dir_salida / "dendrograma_complete.png", p=p)
+        _dibujar_dendrograma(Z, etiquetas, dir_salida / "dendrograma_complete.png", p=p, max_label_len=max_label_len, orientacion=orientacion)
     except Exception as ex:
         logger.warning("Error al generar dendrograma (complete): %s", ex)
     return Z, corr
 
-
-def ejecutar_ward(X, etiquetas: List[str], dir_salida: Path, n_componentes: int = 50, p: int = 40):
+def ejecutar_ward(X, etiquetas: List[str], dir_salida: Path, n_componentes: int = 50, p: int = 40, max_label_len: int = 60, orientacion: str = "top"):
     """
     Ejecuta el algoritmo Ward, aplicando reducción SVD previa.
     Utiliza distancia euclidiana.
@@ -183,7 +182,7 @@ def ejecutar_ward(X, etiquetas: List[str], dir_salida: Path, n_componentes: int 
     logger.info("Ward linkage: correlación cophenética = %.4f (SVD componentes=%d)", corr, n_componentes)
 
     try:
-        _dibujar_dendrograma(Z, etiquetas, dir_salida / "dendrograma_ward.png", p=p)
+        _dibujar_dendrograma(Z, etiquetas, dir_salida / "dendrograma_ward.png", p=p, max_label_len=max_label_len, orientacion=orientacion)
     except Exception as ex:
         logger.warning("Error al generar dendrograma (ward): %s", ex)
     return Z, corr, svd

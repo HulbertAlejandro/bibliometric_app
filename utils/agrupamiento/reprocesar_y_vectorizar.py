@@ -18,7 +18,7 @@ from nltk.stem import WordNetLemmatizer
 from sklearn.feature_extraction.text import TfidfVectorizer
 
 # Configuración de logging
-logger = logging.getLogger("clustering.preprocesamiento")
+logger = logging.getLogger("agrupamiento.preprocesamiento")
 
 # Intentamos descargar recursos de NLTK si no están disponibles localmente
 try:

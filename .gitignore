@@ -19,8 +19,7 @@ __pycache__/
 # Datos / descargas
 downloads/
 data/
-# si quieres ignorar processed también:
-# data/processed/
+salidas/
 
 # Entornos / secretos
 .env

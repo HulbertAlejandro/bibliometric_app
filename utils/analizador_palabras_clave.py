@@ -213,7 +213,7 @@ def dibujar_grafica_precison_nuevos_terminos(precision, common_terms, output_pat
 
 ## --------------------------------------------------------------------------------------------------------------------------------
 # main
-if __name__ == "__main__":
+def main_analizador_palabras_clave():
     # Se cargan los abstracts del 'merged.bib'
     abstracts = cargar_bib()
 
@@ -234,3 +234,5 @@ if __name__ == "__main__":
     # Generar gráfica
     dibujar_grafica_precison_nuevos_terminos(precision, overlap)
    
+if __name__ == "__main__":
+    main_analizador_palabras_clave()
