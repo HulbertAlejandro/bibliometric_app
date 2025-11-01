@@ -334,17 +334,17 @@ def grafos():
             'message': str(e)
         }), 500
     
-# @app.route('/list_bib_files')
-# def list_bib_files():
-#     base_dir = 'static/data/raw/'
-#     bib_info = {}
-#     for subdir in ['ACM', 'IEEE']:
-#         folder = os.path.join(base_dir, subdir)
-#         if os.path.exists(folder):
-#             bib_info[subdir] = [f for f in os.listdir(folder) if f.endswith('.bib')]
-#         else:
-#             bib_info[subdir] = []
-#     return jsonify({'files': bib_info})
+@app.route('/list_bib_files')
+def list_bib_files():
+    base_dir = 'static/data/raw/'
+    bib_info = {}
+    for subdir in ['ACM', 'IEEE']:
+        folder = os.path.join(base_dir, subdir)
+        if os.path.exists(folder):
+            bib_info[subdir] = [f for f in os.listdir(folder) if f.endswith('.bib')]
+        else:
+            bib_info[subdir] = []
+    return jsonify({'files': bib_info})
 
 @app.route('/delete_files', methods=['POST'])
 def delete_files():

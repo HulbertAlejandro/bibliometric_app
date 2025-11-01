@@ -32,6 +32,10 @@
           <i class="fas fa-spider"></i>
           <span>Scrapers</span>
         </a>
+        <a href="#bibfiles" class="nav-item" data-section="bibfiles">
+          <i class="fas fa-folder-open"></i>
+          <span>Archivos .bib</span>
+        </a>
         <a href="#merge" class="nav-item" data-section="merge">
           <i class="fas fa-code-merge"></i>
           <span>Merge BibTeX</span>
@@ -171,6 +175,18 @@
 
               <div id="ieee-result" class="result-message"></div>
             </div>
+          </div>
+        </section>
+
+        <section id="bibfiles" class="content-section">
+          <div class="section-header">
+            <h2>Archivos .bib</h2>
+            <p>
+              Acceso rápido a los archivos BibTeX descargados.
+            </p>
+          </div>
+          <div id="bib-files-content" style="margin: 2rem 0">
+            <div style="color: #aaa">Cargando archivos .bib...</div>
           </div>
         </section>
 
@@ -431,7 +447,6 @@
 
     <!-- Snackbar -->
     <div id="snackbar" class="snackbar"></div>
-
 
     <!-- Loading Overlay -->
     <div id="loadingOverlay" class="loading-overlay">

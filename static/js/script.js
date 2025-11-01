@@ -5,6 +5,8 @@ document.addEventListener("DOMContentLoaded", function () {
   const menuToggle = document.getElementById("menuToggle");
   const sidebar = document.querySelector(".sidebar");
 
+  renderBibFilesSection();
+  
   // Navigation handling
   navItems.forEach((item) => {
     item.addEventListener("click", function (e) {
@@ -500,36 +502,39 @@ async function runCoAuthorshipAnalysis() {
   }
 }
 
-// async function loadBibFilesDropdown() {
-//   try {
-//     const response = await fetch("/list_bib_files");
-//     const data = await response.json();
-//     console.log("Archivos .bib:", data); // Debug
-//     const list = document.getElementById("bib-file-list");
-//     list.innerHTML = "";
-//     for (const [source, files] of Object.entries(data.files)) {
-//       if (files.length > 0) {
-//         const groupLi = document.createElement("li");
-//         groupLi.innerHTML = `<strong>${source}:</strong>`;
-//         list.appendChild(groupLi);
-//         files.forEach((file) => {
-//           const li = document.createElement("li");
-//           li.style.marginLeft = "1.5em";
-//           li.innerHTML = `<a href="/static/data/raw/${source}/${file}" target="_blank">${file}</a>`;
-//           list.appendChild(li);
-//         });
-//       }
-//     }
-//   } catch (e) {
-//     showMessage(
-//       "merge-result",
-//       "Error al cargar archivos .bib: " + e.message,
-//       "error"
-//     );
-//   } finally {
-//     hideLoading();
-//   }
-// }
+async function renderBibFilesSection() {
+  const content = document.getElementById("bib-files-content");
+  content.innerHTML =
+    "<div style='color:#aaa;'>Cargando archivos .bib...</div>";
+  try {
+    const response = await fetch("/list_bib_files");
+    const data = await response.json();
+
+    let out = "";
+    let total = 0;
+    for (const [source, files] of Object.entries(data.files)) {
+      if (files.length > 0) {
+        out += `<h4 style="color:var(--secondary-color,#8b5cf6);margin:.5em 0;font-weight:700">${source}</h4><ul style="margin-bottom:1.2em;margin-left:1.5em;">`;
+        files.forEach((file) => {
+          out += `<li style="margin:.13em 0;">
+            <a href="/static/data/raw/${source}/${file}" target="_blank" style="color:var(--primary-color,#6366f1);text-decoration:none;">${file}</a>
+            <span style="color:#8e8e8e;font-size:0.91em;margin-left:.5em;">[descargar]</span>
+          </li>`;
+          total++;
+        });
+        out += "</ul>";
+      }
+    }
+    if (!total)
+      out =
+        "<div style='color:#cdcdcd;'>No hay archivos .bib en ninguna fuente.</div>";
+    content.innerHTML = out;
+  } catch (e) {
+    content.innerHTML = `<div style="color:#ef4444;">Error al cargar archivos .bib: ${
+      e.message || e
+    }</div>`;
+  }
+}
 
 window.addEventListener("DOMContentLoaded", function () {
   var btnOpen = document.getElementById("openDeleteModal");
