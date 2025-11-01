@@ -19,6 +19,8 @@ from pathlib import Path
 import logging
 from typing import List, Tuple, Dict, Optional
 import numpy as np
+import matplotlib
+matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 
 from scipy.cluster.hierarchy import linkage, dendrogram, cophenet, fcluster

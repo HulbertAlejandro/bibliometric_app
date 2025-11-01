@@ -81,13 +81,6 @@ python main.py
 ````
 python app.py
 ````
-Edita el archivo `main.py` o los scripts en `/scraper` y `/utils` para personalizar el flujo según tus necesidades y las fuentes bibliográficas.
-
----
-
-## Contribución
-
-¡Las contribuciones son bienvenidas! Por favor abre un pull request o deja sugerencias en la sección de Issues.
 
 ---
 
@@ -96,8 +89,8 @@ Edita el archivo `main.py` o los scripts en `/scraper` y `/utils` para personali
 - [x] Extracción y unión básica de datos (IEEE y ACM)
 - [x] Automatización de descarga de todas las bases requeridas
 - [x] Implementación completa de algoritmos de similitud y clustering
-- [ ] Sistema de visualización y exportación PDF
-- [ ] Documentación final por requerimiento
+- [x] Sistema de visualización y exportación PDF
+- [x] Documentación final por requerimiento
 
 ---
 

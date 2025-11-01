@@ -48,7 +48,7 @@
           <i class="fas fa-project-diagram"></i>
           <span>Dendrogramas</span>
         </a>
-        <!-- <a href="#bibliometric" class="nav-item" data-section="bibliometric">
+        <a href="#bibliometric" class="nav-item" data-section="bibliometric">
           <i class="fas fa-chart-line"></i>
           <span>Bibliométrico</span>
         </a>
@@ -59,7 +59,7 @@
         <a href="#coauthorship" class="nav-item" data-section="coauthorship">
           <i class="fas fa-users"></i>
           <span>Co-autoría</span>
-        </a> -->
+        </a>
       </nav>
     </aside>
 
@@ -72,6 +72,15 @@
             <i class="fas fa-bars"></i>
           </button>
           <h1 class="page-title">Panel de Análisis</h1>
+        </div>
+        <div class="header-actions" style="margin-left: auto">
+          <button
+            id="openDeleteModal"
+            class="btn btn-danger"
+            title="Borrar archivos"
+          >
+            <i class="fas fa-trash-alt"></i> Borrar Archivos
+          </button>
         </div>
       </header>
 
@@ -290,7 +299,7 @@
         </section>
 
         <!-- Section: Bibliometric -->
-        <!-- <section id="bibliometric" class="content-section">
+        <section id="bibliometric" class="content-section">
           <div class="section-header">
             <h2>Información Bibliométrica</h2>
             <p>Visualización de métricas y estadísticas</p>
@@ -315,33 +324,114 @@
 
               <div id="bibliometric-result" class="result-message"></div>
               <div id="bibliometric-output" class="gallery-grid"></div>
-              <div id="bibliometric-pdf" class="pdf-container"></div>
+              <div id="bibliometric-pdf" class="pdf-container pdf-viewer"></div>
               <div id="bibliometric-csv" class="csv-container"></div>
             </div>
           </div>
-        </section> -->
+        </section>
 
         <!-- Section: Sentiment Analysis -->
-        <!-- <section id="sentiment" class="content-section">
-          <h2>Análisis de Sentimientos</h2>
-          <button class="btn btn-primary" onclick="runSentimentAnalysis()">
-            Analizar Sentimientos
-          </button>
-          <div id="sentiment-result" class="result-message"></div>
-          <div id="sentiment-output"></div>
-        </section> -->
+        <section id="sentiment" class="content-section">
+          <div class="section-header">
+            <h2>Análisis de Sentimientos</h2>
+            <p>Visualiza resultados y tendencias emocionales</p>
+          </div>
+
+          <div class="cards-grid single">
+            <div class="card">
+              <div class="card-icon sentiment">
+                <i class="fas fa-grin-stars"></i>
+              </div>
+              <h3>Procesamiento de lenguaje natural (PNL)</h3>
+              <p class="card-description">
+                Obtén el análisis visual sobre emociones predominantes en los
+                artículos.
+              </p>
+
+              <button class="btn btn-primary" onclick="runSentimentAnalysis()">
+                <i class="fas fa-search"></i> Analizar Sentimientos
+              </button>
+
+              <div id="sentiment-result" class="result-message"></div>
+              <div id="sentiment-output" class="gallery-grid"></div>
+            </div>
+          </div>
+        </section>
 
         <!-- Section: Co-authorship Analysis -->
-        <!-- <section id="coauthorship" class="content-section">
-          <h2>Análisis de Co-autoría</h2>
-          <button class="btn btn-primary" onclick="runCoAuthorshipAnalysis()">
-            Analizar Co-autoría
-          </button>
-          <div id="coauthorship-result" class="result-message"></div>
-          <div id="coauthorship-output"></div>
-        </section> -->
+        <section id="coauthorship" class="content-section">
+          <div class="section-header">
+            <h2>Análisis de Co-autoría</h2>
+            <p>
+              Explora las colaboraciones científicas entre autores y las
+              métricas de redes.
+            </p>
+          </div>
+
+          <div class="cards-grid single">
+            <div class="card card-coauthorship">
+              <div class="card-icon coauthor">
+                <i class="fas fa-project-diagram"></i>
+              </div>
+              <h3>Red de Co-autoría</h3>
+              <p class="card-description">
+                Visualiza el grafo de colaboraciones y accede a métricas de la
+                red de autores.
+              </p>
+
+              <button
+                class="btn btn-primary"
+                onclick="runCoAuthorshipAnalysis()"
+              >
+                <i class="fas fa-network-wired"></i> Analizar Co-autoría
+              </button>
+
+              <div id="coauthorship-result" class="result-message"></div>
+              <div id="coauthorship-images" class="gallery-grid"></div>
+              <div id="coauthorship-csv" class="csv-container"></div>
+            </div>
+          </div>
+        </section>
       </div>
     </main>
+
+    <!-- Modal de borrado de archivos -->
+    <div id="deleteFilesModal" class="modal-overlay">
+      <div class="modal-box">
+        <h3>¿Qué archivos deseas borrar?</h3>
+        <p style="color: var(--text-secondary); margin-bottom: 2rem">
+          Esta acción puede eliminar de forma irreversible los archivos
+          seleccionados.
+        </p>
+        <div class="modal-buttons">
+          <button
+            id="delete-all-files"
+            class="btn btn-danger"
+            style="margin-bottom: 0.5em"
+          >
+            <i class="fas fa-trash"></i> Borrar todo (incluye .bib)
+          </button>
+          <button
+            id="delete-analysis-files"
+            class="btn btn-warning"
+            style="margin-bottom: 0.5em"
+          >
+            <i class="fas fa-file-excel"></i> Solo archivos de análisis
+          </button>
+          <button
+            id="closeDeleteModal"
+            class="btn btn-secondary"
+            style="margin-bottom: 0.5em"
+          >
+            Cancelar
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Snackbar -->
+    <div id="snackbar" class="snackbar"></div>
+
 
     <!-- Loading Overlay -->
     <div id="loadingOverlay" class="loading-overlay">

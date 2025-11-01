@@ -7,7 +7,10 @@ import os
 import pandas as pd
 import numpy as np
 import networkx as nx
+import matplotlib
+matplotlib.use('Agg')
 import matplotlib.pyplot as plt
+
 import seaborn as sns
 from collections import defaultdict, Counter
 import json
@@ -39,7 +42,7 @@ class GraphBuilder:
         self.authors_dict = defaultdict(list)
         self.citations_dict = defaultdict(set)
     
-    def build_coauthorship_graph(self, df, author_column='author'):
+    def construir_coautor_grafo(self, df, author_column='author'):
         """
         Construye grafo de co-autoría
         Complejidad: O(n·k²) donde n=papers, k=autores por paper
@@ -83,7 +86,7 @@ class GraphBuilder:
         authors = [a.strip() for a in authors if a.strip()]
         return authors
     
-    def build_citation_graph(self, df, citation_column='references'):
+    def construir_grafo_citas(self, df, citation_column='references'):
         """
         Construye grafo de citaciones
         Complejidad: O(n·c) donde n=papers, c=citas por paper
@@ -384,7 +387,7 @@ class GraphVisualizer:
         print(f"✅ Grafo interactivo guardado: {output_path}")
 
 
-def main_graph_analysis(bibtex_file='static/data/processed/merged.bib'):
+def main_analizador_grafos(bibtex_file='static/data/processed/merged.bib'):
     """
     Pipeline completo de análisis de grafos
     """
@@ -411,7 +414,7 @@ def main_graph_analysis(bibtex_file='static/data/processed/merged.bib'):
             'year': [2022, 2023, 2024]
         })
     
-    output_dir = 'static/salidas/graph_analysis'
+    output_dir = 'static/salidas/grafo_analysis'
     os.makedirs(output_dir, exist_ok=True)
     
     # 2. Construir grafo de co-autoría
@@ -426,7 +429,7 @@ def main_graph_analysis(bibtex_file='static/data/processed/merged.bib'):
     )
     top_authors = set(author_counts.head(K).index)
     df_top = df[df['author'].apply(lambda x: str(x).split(' and ')[0].strip() if isinstance(x, str) else None).isin(top_authors)]
-    G = builder.build_coauthorship_graph(df_top, author_column='author')
+    G = builder.construir_coautor_grafo(df_top, author_column='author')
     
     # Guardar grafo
     nx.write_gexf(G, f'{output_dir}/coauthorship_graph.gexf')
@@ -489,4 +492,4 @@ def main_graph_analysis(bibtex_file='static/data/processed/merged.bib'):
 
 
 if __name__ == '__main__':
-    main_graph_analysis()
+    main_analizador_grafos()

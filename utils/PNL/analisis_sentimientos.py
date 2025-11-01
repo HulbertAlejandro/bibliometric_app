@@ -6,6 +6,8 @@ Complejidad: O(n·m) donde n=documentos, m=tokens promedio
 import os
 import pandas as pd
 import numpy as np
+import matplotlib
+matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 import seaborn as sns
 from datetime import datetime
@@ -378,15 +380,15 @@ def main_sentiment_analysis(bibtex_file='static/data/processed/merged.bib'):
     )
     
     # 4. Guardar resultados
-    output_dir = 'salidas/sentiment_analysis'
+    output_dir = 'static/salidas/analizador_sentimientos'
     os.makedirs(output_dir, exist_ok=True)
     
     df_results.to_csv(
-        f'{output_dir}/sentiment_results.csv', 
+        f'{output_dir}/resultados_sentimientos.csv',
         index=False, 
         encoding='utf-8'
     )
-    print(f"\n✅ Resultados guardados en {output_dir}/sentiment_results.csv")
+    print(f"\n✅ Resultados guardados en {output_dir}/resultados_sentimientos.csv")
     
     # 5. Estadísticas
     print("\n📈 Estadísticas de Sentimiento:")

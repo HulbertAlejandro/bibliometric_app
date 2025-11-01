@@ -5,6 +5,9 @@ from scraper.acm_scraper import extraer_acm_bibtex
 from scraper.ieee_scraper import extraer_ieee_bibtex_chrome
 from utils.analizador_palabras_clave import main_analizador_palabras_clave
 from utils.agrupamiento.ejecutar_todo import main_analizador_dendrogramas
+from utils.PNL.analisis_sentimientos import main_sentiment_analysis
+from utils.visualizaciones_5 import main_bibliometrica
+from utils.Voraz.analisis_grafos import main_analizador_grafos
 
 def run_acm_scraper():
     try:
@@ -64,7 +67,10 @@ def menu():
         print("4. Comparar artículos")
         print("5. Analizador de Keywords")
         print("6. Analizador de Similitud con Dendrogramas")
-        print("7. Salir")
+        print("7. Información Bibliométrica")
+        print("8. Analizador de Sentimientos")
+        print("9. Analizador de Grafos")
+        print("0. Salir")
 
         opcion = input("Selecciona una opción: ")
 
@@ -81,6 +87,12 @@ def menu():
         elif opcion == "6":
             run_dendrograms_analyzer()
         elif opcion == "7":
+            main_bibliometrica()
+        elif opcion == "8":
+            main_sentiment_analysis()
+        elif opcion == "9":
+            main_analizador_grafos()
+        elif opcion == "0":
             print("Terminando...")
             break
         else:

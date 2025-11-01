@@ -6,6 +6,8 @@ import numpy as np
 from scipy.sparse import csr_matrix
 from rapidfuzz import fuzz
 import os
+import matplotlib
+matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 
 """"
