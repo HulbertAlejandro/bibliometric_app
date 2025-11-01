@@ -5,8 +5,6 @@ document.addEventListener("DOMContentLoaded", function () {
   const menuToggle = document.getElementById("menuToggle");
   const sidebar = document.querySelector(".sidebar");
 
-  loadBibFilesDropdown();
-
   // Navigation handling
   navItems.forEach((item) => {
     item.addEventListener("click", function (e) {
@@ -45,30 +43,6 @@ document.addEventListener("DOMContentLoaded", function () {
       }
     }
   });
-});
-
-// Muestra/oculta y carga sólo al abrir el dropdown:
-document
-  .getElementById("userDropdownButton")
-  .addEventListener("click", function (e) {
-    e.preventDefault();
-    const dropdown = this.closest(".user-dropdown");
-    dropdown.classList.toggle("open");
-    const menu = dropdown.querySelector(".user-dropdown-menu");
-    if (dropdown.classList.contains("open")) {
-      menu.innerHTML = "<li>Cargando...</li>";
-      loadBibFilesDropdown();
-    } else {
-      menu.innerHTML = "";
-    }
-  });
-
-// Oculta el dropdown si haces click afuera
-document.addEventListener("click", function (e) {
-  const dropdown = document.querySelector(".user-dropdown");
-  if (dropdown && !dropdown.contains(e.target)) {
-    dropdown.classList.remove("open");
-  }
 });
 
 // Utility Functions
@@ -235,17 +209,21 @@ async function runComparison() {
     if (data.status === "success" && data.result) {
       showMessage("compare-result", data.message, "success");
       // Muestra solo si hay resultado, usando tabla formateada
-      const lines = String(data.result).split('\n').filter(line => line.trim());
+      const lines = String(data.result)
+        .split("\n")
+        .filter((line) => line.trim());
       if (lines.length > 0) {
-        let tableHtml = '<table class="table table-striped" style="margin:1em 0;min-width:300px;">';
-        tableHtml += '<thead><tr><th>Métrica</th><th>Valor</th></tr></thead><tbody>';
-        lines.forEach(line => {
-          const [key, value] = line.split(':').map(s => s.trim());
+        let tableHtml =
+          '<table class="table table-striped" style="margin:1em 0;min-width:300px;">';
+        tableHtml +=
+          "<thead><tr><th>Métrica</th><th>Valor</th></tr></thead><tbody>";
+        lines.forEach((line) => {
+          const [key, value] = line.split(":").map((s) => s.trim());
           if (key && value !== undefined) {
             tableHtml += `<tr><td>${key}</td><td>${value}</td></tr>`;
           }
         });
-        tableHtml += '</tbody></table>';
+        tableHtml += "</tbody></table>";
         outputBox.innerHTML = tableHtml;
         outputBox.style.display = "block";
       }
@@ -264,7 +242,6 @@ async function runComparison() {
     hideLoading();
   }
 }
-
 
 // Keywords Analysis
 async function runKeywordsAnalysis() {
@@ -393,20 +370,22 @@ async function runBibliometricAnalysis() {
         });
       }
 
-      // Display PDF links
+      // Display PDF embedded
       const pdfDiv = document.getElementById("bibliometric-pdf");
       pdfDiv.innerHTML = "";
 
       if (data.pdfs && data.pdfs.length > 0) {
-        data.pdfs.forEach((pdfUrl) => {
-          const filename = pdfUrl.split("/").pop();
-          const link = document.createElement("a");
-          link.href = pdfUrl;
-          link.className = "pdf-link";
-          link.download = filename;
-          link.innerHTML = `<i class="fas fa-file-pdf"></i> ${filename}`;
-          pdfDiv.appendChild(link);
-        });
+        // Usa solo el primer PDF si hay más de uno
+        const pdfUrl = "/static/salidas/info_bibliometrica/" + data.pdfs[0];
+        pdfDiv.innerHTML = `
+          <div class="pdf-viewer">
+            <h4>Reporte PDF Visualizable</h4>
+            <iframe src="${pdfUrl}" width="1400px" height="700px" frameborder="0" style="border:1px solid #308113; margin-bottom:1rem;"></iframe>
+            <a href="${pdfUrl}" class="pdf-link btn btn-secondary" download>
+              <i class="fas fa-download"></i> Descargar PDF
+            </a>
+          </div>
+        `;
       }
 
       // Display CSV data
@@ -434,30 +413,37 @@ async function runBibliometricAnalysis() {
   }
 }
 
-async function loadBibFilesDropdown() {
+// Sentiment Analysis
+async function runSentimentAnalysis() {
+  showLoading();
   try {
-    const response = await fetch("/list_bib_files");
+    const response = await fetch("/sentiment", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+    });
     const data = await response.json();
-    console.log("Archivos .bib:", data); // Debug
-    const list = document.getElementById("bib-file-list");
-    list.innerHTML = "";
-    for (const [source, files] of Object.entries(data.files)) {
-      if (files.length > 0) {
-        const groupLi = document.createElement("li");
-        groupLi.innerHTML = `<strong>${source}:</strong>`;
-        list.appendChild(groupLi);
-        files.forEach((file) => {
-          const li = document.createElement("li");
-          li.style.marginLeft = "1.5em";
-          li.innerHTML = `<a href="/static/data/raw/${source}/${file}" target="_blank">${file}</a>`;
-          list.appendChild(li);
+
+    if (data.status === "success") {
+      showMessage("sentiment-result", data.message, "success");
+      const outputDiv = document.getElementById("sentiment-output");
+      outputDiv.innerHTML = "";
+
+      // Mostrar todas las imágenes como galería
+      if (data.images && data.images.length > 0) {
+        data.images.forEach((imgUrl) => {
+          const imgElement = document.createElement("div");
+          imgElement.className = "gallery-item";
+          imgElement.innerHTML = `<img src="${imgUrl}" alt="Sentiment Analysis" />`;
+          outputDiv.appendChild(imgElement);
         });
       }
+    } else {
+      showMessage("sentiment-result", data.message, "error");
     }
-  } catch (e) {
+  } catch (error) {
     showMessage(
-      "merge-result",
-      "Error al cargar archivos .bib: " + e.message,
+      "sentiment-result",
+      "Error al ejecutar el análisis: " + error.message,
       "error"
     );
   } finally {
@@ -465,30 +451,173 @@ async function loadBibFilesDropdown() {
   }
 }
 
-// async function runSentimentAnalysis() {
-//   showLoading();
+// Co-authorship Analysis
+async function runCoAuthorshipAnalysis() {
+  showLoading();
+  try {
+    const response = await fetch("/grafos", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+    });
+    const data = await response.json();
+
+    if (data.status === "success") {
+      showMessage("coauthorship-result", data.message, "success");
+
+      // Mostrar todas las imágenes en galería
+      const imagesDiv = document.getElementById("coauthorship-images");
+      imagesDiv.innerHTML = "";
+      if (data.images && data.images.length > 0) {
+        data.images.forEach((imgUrl) => {
+          const imgElement = document.createElement("div");
+          imgElement.className = "gallery-item";
+          imgElement.innerHTML = `<img src="${imgUrl}" alt="Red de Co-autoría">`;
+          imagesDiv.appendChild(imgElement);
+        });
+      }
+
+      // Mostrar los CSVs
+      const csvDiv = document.getElementById("coauthorship-csv");
+      csvDiv.innerHTML = "";
+      if (data.csv_data) {
+        for (const [filename, htmlTable] of Object.entries(data.csv_data)) {
+          const section = document.createElement("div");
+          section.innerHTML = `<h4 style="margin: 1.5rem 0 1rem;">${filename}</h4>${htmlTable}`;
+          csvDiv.appendChild(section);
+        }
+      }
+    } else {
+      showMessage("coauthorship-result", data.message, "error");
+    }
+  } catch (error) {
+    showMessage(
+      "coauthorship-result",
+      "Error al ejecutar el análisis: " + error.message,
+      "error"
+    );
+  } finally {
+    hideLoading();
+  }
+}
+
+// async function loadBibFilesDropdown() {
 //   try {
-//     const response = await fetch('/sentiment', { method: 'POST' });
+//     const response = await fetch("/list_bib_files");
 //     const data = await response.json();
-//     if (data.status === 'success') {
-//       showMessage('sentiment-result', data.message, 'success');
-//       document.getElementById('sentiment-output').innerHTML = /* genera el HTML dinámico */;
-//     } else {
-//       showMessage('sentiment-result', data.message, 'error');
+//     console.log("Archivos .bib:", data); // Debug
+//     const list = document.getElementById("bib-file-list");
+//     list.innerHTML = "";
+//     for (const [source, files] of Object.entries(data.files)) {
+//       if (files.length > 0) {
+//         const groupLi = document.createElement("li");
+//         groupLi.innerHTML = `<strong>${source}:</strong>`;
+//         list.appendChild(groupLi);
+//         files.forEach((file) => {
+//           const li = document.createElement("li");
+//           li.style.marginLeft = "1.5em";
+//           li.innerHTML = `<a href="/static/data/raw/${source}/${file}" target="_blank">${file}</a>`;
+//           list.appendChild(li);
+//         });
+//       }
 //     }
-//   } finally { hideLoading(); }
+//   } catch (e) {
+//     showMessage(
+//       "merge-result",
+//       "Error al cargar archivos .bib: " + e.message,
+//       "error"
+//     );
+//   } finally {
+//     hideLoading();
+//   }
 // }
 
-// async function runCoAuthorshipAnalysis() {
-//   showLoading();
-//   try {
-//     const response = await fetch('/coauthorship', { method: 'POST' });
-//     const data = await response.json();
-//     if (data.status === 'success') {
-//       showMessage('coauthorship-result', data.message, 'success');
-//       document.getElementById('coauthorship-output').innerHTML = /* HTML dinámico */;
-//     } else {
-//       showMessage('coauthorship-result', data.message, 'error');
-//     }
-//   } finally { hideLoading(); }
-// }
+window.addEventListener("DOMContentLoaded", function () {
+  var btnOpen = document.getElementById("openDeleteModal");
+  var modal = document.getElementById("deleteFilesModal");
+  var btnClose = document.getElementById("closeDeleteModal");
+  var btnDeleteAll = document.getElementById("delete-all-files");
+  var btnDeleteAnalysis = document.getElementById("delete-analysis-files");
+
+  function showModal() {
+    modal.classList.remove("fading-out");
+    modal.classList.add("visible");
+  }
+
+  function hideModal() {
+    modal.classList.add("fading-out");
+    modal.classList.remove("visible");
+    // Cuando termine la transición, quita el display por completo:
+    setTimeout(function () {
+      modal.classList.remove("fading-out");
+      modal.style.display = "none";
+    }, 340);
+  }
+
+  // Abrir modal
+  if (btnOpen && modal) {
+    btnOpen.onclick = function () {
+      modal.style.display = "flex"; // Garantiza que está en el flow
+      requestAnimationFrame(showModal); // Espera 1 frame y hace el fade
+    };
+  }
+
+  // Cerrar modal por botón
+  if (btnClose && modal) {
+    btnClose.onclick = function () {
+      hideModal();
+    };
+  }
+
+  // Cerrar haciendo click fuera del cuadro
+  if (modal) {
+    modal.addEventListener("click", function (e) {
+      if (e.target === modal) hideModal();
+    });
+  }
+
+  // Acciones de borrado
+  if (btnDeleteAll && modal) {
+    btnDeleteAll.onclick = function () {
+      borrarArchivos("all");
+    };
+  }
+  if (btnDeleteAnalysis && modal) {
+    btnDeleteAnalysis.onclick = function () {
+      borrarArchivos("analysis");
+    };
+  }
+
+  function borrarArchivos(tipo) {
+    showLoading();
+    fetch("/delete_files", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ type: tipo }),
+    })
+      .then((r) => r.json())
+      .then((data) => {
+        showSnackbar(data.message, 3300);
+        hideModal();
+        hideLoading();
+      })
+      .catch((e) => {
+        showSnackbar("Error: " + e, 4000);
+        hideLoading();
+        hideModal();
+      });
+  }
+});
+
+function showSnackbar(msg, duration = 3200) {
+  var sb = document.getElementById("snackbar");
+  sb.innerText = msg;
+  sb.classList.add("visible");
+  setTimeout(function () {
+    sb.classList.remove("visible");
+    setTimeout(function () {
+      sb.innerText = "";
+      sb.style.display = "none";
+    }, 400);
+  }, duration);
+  sb.style.display = "block";
+}

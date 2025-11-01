@@ -14,3 +14,7 @@ nltk
 python-louvain
 plotly
 scipy
+wordcloud
+reportlab
+pycountry
+kaleido
