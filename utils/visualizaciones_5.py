@@ -607,9 +607,9 @@ def exportar_pdf(images: list[Path], out_pdf: Path, stats: dict) -> None:
     # Build
     try:
         doc.build(story)
-        print(f"✅ PDF generado: {out_pdf}")
+        print(f"PDF generado: {out_pdf}")
     except Exception as e:
-        print(f"⚠️ Usando plantilla simple: {e}")
+        print(f"Usando plantilla simple: {e}")
         SimpleDocTemplate(str(out_pdf), pagesize=A4).build(story)
 
 
@@ -618,29 +618,29 @@ def exportar_pdf(images: list[Path], out_pdf: Path, stats: dict) -> None:
 def run(bib_path: Path, out_dir: Path) -> dict:
     out_dir.mkdir(parents=True, exist_ok=True)
 
-    print("🔄 Cargando datos...")
+    print("Cargando datos...")
     entries = cargar_bib(bib_path)
     df = to_dataframe(entries)
-    print(f"📊 {len(df)} entradas")
+    print(f"{len(df)} entradas")
 
     heatmap_png = out_dir / "geo_heatmap.png"
     wordcloud_png = out_dir / "wordcloud.png" 
     timeline_png = out_dir / "timeline.png"
     pdf_path = out_dir / "reporte_profesional.pdf"
 
-    print("🗺️  Mapa...")
+    print("  Mapa...")
     construir_mapa_de_calor_geoespacial(df, heatmap_png)
 
-    print("☁️  Wordcloud...")
+    print("  Wordcloud...")
     construir_wordcloud(df, wordcloud_png)
 
-    print("📈 Timeline...")
+    print(" Timeline...")
     construir_linea_de_tiempo(df, timeline_png)
 
-    print("📋 Stats...")
+    print(" Stats...")
     stats = crear_stats_resumidas(df)
 
-    print("📄 PDF...")
+    print(" PDF...")
     exportar_pdf([heatmap_png, wordcloud_png, timeline_png], pdf_path, stats)
 
     # Reemplazar comas por punto y coma en todas las celdas de texto (str)
@@ -649,7 +649,7 @@ def run(bib_path: Path, out_dir: Path) -> dict:
 
     df.to_csv(out_dir / "debug.csv", index=False)
 
-    print("\n✅ ¡Completado!")
+    print("\n ¡Completado!")
     return {"pdf": str(pdf_path), "stats": stats}
 
 
@@ -658,7 +658,7 @@ def main_bibliometrica():
     out_dir = Path("static/salidas/info_bibliometrica")
 
     if not bib_path.exists():
-        print(f"❌ Archivo no encontrado: {bib_path}")
+        print(f" Archivo no encontrado: {bib_path}")
         return
 
     print("="*70)
@@ -667,7 +667,7 @@ def main_bibliometrica():
 
     results = run(bib_path, out_dir)
 
-    print("\n📊 ESTADÍSTICAS:")
+    print("\n ESTADÍSTICAS:")
     for k, v in results['stats'].items():
         print(f"  • {k}: {v}")
     print("="*70)

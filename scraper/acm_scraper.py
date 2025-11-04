@@ -109,7 +109,7 @@ def configurar_navegador(carpeta_descargas, ruta_perfil):
     }
     opciones.add_experimental_option("prefs", preferencias)
 
-    # 🔹 Reutilizar tu perfil real (donde ya pasaste el captcha)
+    # Reutilizar tu perfil real (donde ya pasaste el captcha)
     opciones.add_argument(rf"--user-data-dir={ruta_perfil}")  
     opciones.add_argument(r"--profile-directory=Default")     # o "Profile 1" según el perfil
     opciones.add_argument("--start-maximized")
@@ -128,7 +128,7 @@ if __name__ == "__main__":
         # Configurar rutas
         carpeta_descargas = str(Path("downloads").resolve())
 
-        # ⚙️ Ajusta esta ruta según tu perfil de Chrome
+        # Ajusta esta ruta según tu perfil de Chrome
         ruta_perfil = str(Path.home() / "ChromeProfiles" / "scraper_profile")
 
         opciones = configurar_navegador(carpeta_descargas, ruta_perfil)

@@ -56,10 +56,8 @@ class GraphBuilder:
             # Agregar nodos (autores)
             for author in authors:
                 if not self.G.has_node(author):
-                    # ✅ CAMBIO: Convertir lista a string separado por punto y coma
                     self.G.add_node(author, papers=paper_id, type='author')
                 else:
-                    # ✅ CAMBIO: Concatenar IDs con punto y coma
                     existing_papers = self.G.nodes[author].get('papers', '')
                     self.G.nodes[author]['papers'] = f"{existing_papers}; {paper_id}"
             
@@ -71,7 +69,7 @@ class GraphBuilder:
                     else:
                         self.G.add_edge(author1, author2, weight=1)
         
-        print(f"✅ Grafo construido: {self.G.number_of_nodes()} nodos, {self.G.number_of_edges()} aristas")
+        print(f"Grafo construido: {self.G.number_of_nodes()} nodos, {self.G.number_of_edges()} aristas")
         return self.G
     
     def _parse_authors(self, author_string):
@@ -143,7 +141,7 @@ class GreedyAlgorithms:
         
         total_weight = sum(data.get('weight', 1) for _, _, data in mst.edges(data=True))
         
-        print(f"\n🌳 Kruskal MST:")
+        print(f"\nKruskal MST:")
         print(f"  Aristas originales: {G.number_of_edges()}")
         print(f"  Aristas en MST: {mst.number_of_edges()}")
         print(f"  Peso total: {total_weight}")
@@ -167,7 +165,7 @@ class GreedyAlgorithms:
         
         total_weight = sum(data.get('weight', 1) for _, _, data in mst.edges(data=True))
         
-        print(f"\n🌳 Prim MST:")
+        print(f"\nPrim MST:")
         print(f"  Aristas en MST: {mst.number_of_edges()}")
         print(f"  Peso total: {total_weight}")
         
@@ -188,7 +186,7 @@ class GreedyAlgorithms:
             lengths = nx.single_source_dijkstra_path_length(G, source, weight='weight')
             paths = nx.single_source_dijkstra_path(G, source, weight='weight')
             
-            print(f"\n🛤️  Dijkstra desde '{source}':")
+            print(f"\nDijkstra desde '{source}':")
             print(f"  Nodos alcanzables: {len(lengths)}")
             
             # Mostrar 5 caminos más cortos
@@ -199,7 +197,7 @@ class GreedyAlgorithms:
             
             return lengths, paths
         except nx.NodeNotFound:
-            print(f"❌ Nodo '{source}' no encontrado en el grafo")
+            print(f"Nodo '{source}' no encontrado en el grafo")
             return {}, {}
     
     @staticmethod
@@ -216,7 +214,7 @@ class GreedyAlgorithms:
         
         num_colors = max(coloring.values()) + 1
         
-        print(f"\n🎨 Coloración Voraz:")
+        print(f"\nColoración Voraz:")
         print(f"  Número de colores usados: {num_colors}")
         print(f"  Número cromático estimado: {num_colors}")
         
@@ -240,7 +238,7 @@ class GraphMetrics:
         """
         pagerank = nx.pagerank(G, alpha=alpha, max_iter=max_iter, weight='weight')
         
-        print(f"\n⭐ PageRank Analysis:")
+        print(f"\nPageRank Analysis:")
         top_10 = sorted(pagerank.items(), key=lambda x: x[1], reverse=True)[:10]
         
         print("  Top 10 nodos más influyentes:")
@@ -257,7 +255,7 @@ class GraphMetrics:
         """
         betweenness = nx.betweenness_centrality(G, weight='weight')
         
-        print(f"\n🌉 Betweenness Centrality (Papers Puente):")
+        print(f"\nBetweenness Centrality (Papers Puente):")
         top_10 = sorted(betweenness.items(), key=lambda x: x[1], reverse=True)[:10]
         
         for i, (node, score) in enumerate(top_10, 1):
@@ -313,7 +311,7 @@ class GraphVisualizer:
         plt.savefig(output_path, dpi=300, bbox_inches='tight')
         plt.close()
         
-        print(f"✅ Grafo guardado: {output_path}")
+        print(f"Grafo guardado: {output_path}")
     
     @staticmethod
     def plot_interactive(G, output_path, title="Interactive Graph"):
@@ -321,7 +319,7 @@ class GraphVisualizer:
         Visualización interactiva con Plotly
         """
         if not PLOTLY_AVAILABLE:
-            print("❌ Plotly no disponible")
+            print("Plotly no disponible")
             return
         
         pos = nx.spring_layout(G, k=0.5, iterations=50, seed=42)
@@ -384,7 +382,7 @@ class GraphVisualizer:
                        ))
         
         fig.write_html(output_path)
-        print(f"✅ Grafo interactivo guardado: {output_path}")
+        print(f"Grafo interactivo guardado: {output_path}")
 
 
 def main_analizador_grafos(bibtex_file='static/data/processed/merged.bib'):
@@ -403,9 +401,9 @@ def main_analizador_grafos(bibtex_file='static/data/processed/merged.bib'):
         
         entries = bib_database.entries
         df = pd.DataFrame(entries)
-        print(f"\n✅ Cargados {len(df)} artículos")
+        print(f"\nCargados {len(df)} artículos")
     except Exception as e:
-        print(f"❌ Error: {e}")
+        print(f"Error: {e}")
         # Datos de ejemplo
         df = pd.DataFrame({
             'ID': ['paper1', 'paper2', 'paper3'],
@@ -467,12 +465,12 @@ def main_analizador_grafos(bibtex_file='static/data/processed/merged.bib'):
     })
     
     results_df.to_csv(f'{output_dir}/graph_metrics.csv', index=False)
-    print(f"\n✅ Métricas guardadas: {output_dir}/graph_metrics.csv")
+    print(f"\nMétricas guardadas: {output_dir}/graph_metrics.csv")
     
     # 6. Visualizaciones
     visualizer = GraphVisualizer()
     
-    print("\n🎨 Generando visualizaciones...")
+    print("\nGenerando visualizaciones...")
     
     # Grafo completo
     visualizer.plot_graph(G, f'{output_dir}/coauthorship_network.png', 
@@ -486,7 +484,7 @@ def main_analizador_grafos(bibtex_file='static/data/processed/merged.bib'):
     visualizer.plot_interactive(G, f'{output_dir}/interactive_network.html',
                                title='Red de Co-autoría Interactiva')
     
-    print(f"\n✅ Análisis completado. Resultados en {output_dir}")
+    print(f"\nAnálisis completado. Resultados en {output_dir}")
     
     return G, results_df
 

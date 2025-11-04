@@ -85,7 +85,7 @@ def main_analizador_dendrogramas():
     dir_salida = raiz / "static" / "salidas" / "agrupamiento_y_dendrogramas"
     dir_salida.mkdir(parents=True, exist_ok=True)
 
-    # --- 1️⃣ Cargar y preprocesar abstracts ---
+    # --- 1️ Cargar y preprocesar abstracts ---
     abstracts_crudos = cargar_abstracts_desde_bib(ruta_bib)
     if not abstracts_crudos:
         logger.error("No se encontraron abstracts en %s. Abortando ejecución.", ruta_bib)
@@ -94,12 +94,12 @@ def main_analizador_dendrogramas():
     abstracts_limpios = preprocesar_abstracts(abstracts_crudos)
     claves, vectorizador, X = vectorizar_textos(abstracts_limpios)
 
-    # --- 2️⃣ Ejecutar los tres algoritmos jerárquicos ---
+    # --- 2️ Ejecutar los tres algoritmos jerárquicos ---
     Z_avg, coph_avg = ejecutar_average_linkage(X, claves, dir_salida, p=10, max_label_len=60, orientacion="top")
     Z_comp, coph_comp = ejecutar_complete_linkage(X, claves, dir_salida, p=5, max_label_len=60, orientacion="top")
     Z_ward, coph_ward, svd = ejecutar_ward(X, claves, dir_salida, n_componentes=2, p=5, max_label_len=60, orientacion="top")
 
-    # --- 3️⃣ Evaluar la calidad de agrupamientos con Silhouette ---
+    # --- 3️ Evaluar la calidad de agrupamientos con Silhouette ---
     rango_k = list(range(2, 9))
     sil_avg = evaluar_por_silhouette(X, Z_avg, "promedio", rango_k, metrica="cosine")
     sil_comp = evaluar_por_silhouette(X, Z_comp, "completo", rango_k, metrica="cosine")
@@ -116,7 +116,7 @@ def main_analizador_dendrogramas():
 
     sil_ward = evaluar_por_silhouette(X, Z_ward, "ward", rango_k, metrica="euclidean", X_reducido=X_reducido)
 
-    # --- 4️⃣ Guardar métricas en CSV ---
+    # --- 4️ Guardar métricas en CSV ---
     ruta_metricas = dir_salida / "metricas_agrupamiento.csv"
     with ruta_metricas.open("w", newline="", encoding="utf-8") as f:
         escritor = csv.writer(f)
@@ -130,7 +130,7 @@ def main_analizador_dendrogramas():
 
     logger.info("Métricas guardadas en: %s", ruta_metricas)
 
-    # --- 5️⃣ Mostrar resultados en logs ---
+    # --- 5️ Mostrar resultados en logs ---
     def mostrar_mejor(nombre, dic_sil):
         mejor_k = seleccionar_mejor_k(dic_sil)
         if mejor_k is None:

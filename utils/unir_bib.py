@@ -112,7 +112,7 @@ def unir_entradas(e_list: List[Dict]) -> Dict:
     
     merged["_original_sources"] = "; ".join(source_files)
     merged["_original_ids"] = "; ".join(source_ids)
-    merged["_merge_count"] = str(len(e_list))  # ✅ Convertir a string
+    merged["_merge_count"] = str(len(e_list))
     
     fields = set().union(*[set(e.keys()) for e in e_list])
     fields = [f for f in fields if not f.startswith("_")]
@@ -189,11 +189,11 @@ def unir_colecciones(
                         if a_idx in used_acm:
                             continue
                         
-                        # ✅ Fusionar entradas
+                        # Fusionar entradas
                         merged = unir_entradas([e_ieee, a_entry])
                         merged_results.append(merged)
                         
-                        # ✅ Guardar duplicado (la entrada ACM que se fusionó)
+                        # Guardar duplicado (la entrada ACM que se fusionó)
                         dup_entry = a_entry.copy()
                         dup_entry["_duplicate_reason"] = f"Duplicado con IEEE por ISBN: {isb}"
                         dup_entry["_merged_with"] = e_ieee.get("ID", "")
@@ -239,11 +239,11 @@ def unir_colecciones(
                 acm_real_idx = acm_pool_idx[pos]
                 e_acm = acm_entries[acm_real_idx]
                 
-                # ✅ Fusionar entradas
+                # Fusionar entradas
                 merged = unir_entradas([e_ieee, e_acm])
                 merged_results.append(merged)
                 
-                # ✅ Guardar duplicado
+                # Guardar duplicado
                 dup_entry = e_acm.copy()
                 dup_entry["_duplicate_reason"] = f"Duplicado con IEEE por título (score: {score})"
                 dup_entry["_merged_with"] = e_ieee.get("ID", "")
@@ -337,7 +337,7 @@ def escribir_archivos(
     
     out_bib_path = out_dir / out_bib
     out_bib_path.write_text(writer.write(bibdb), encoding="utf-8")
-    logger.info("✅ Archivo unificado guardado: %s (%d entradas)", out_bib_path, len(out_entries))
+    logger.info("Archivo unificado guardado: %s (%d entradas)", out_bib_path, len(out_entries))
     
     # ===== 2. Archivo de duplicados =====
     dup_entries = []
@@ -351,7 +351,7 @@ def escribir_archivos(
     
     out_dup_path = out_dir / out_dup_bib
     out_dup_path.write_text(writer.write(dup_bibdb), encoding="utf-8")
-    logger.info("✅ Archivo de duplicados guardado: %s (%d entradas)", out_dup_path, len(dup_entries))
+    logger.info("Archivo de duplicados guardado: %s (%d entradas)", out_dup_path, len(dup_entries))
     
     # ===== 3. CSV de mapeo =====
     out_csv_path = out_dir / out_csv
@@ -361,15 +361,15 @@ def escribir_archivos(
         w.writeheader()
         for r in mapping_rows:
             w.writerow(r)
-    logger.info("✅ CSV de mapeo guardado: %s", out_csv_path)
+    logger.info("CSV de mapeo guardado: %s", out_csv_path)
     
     # ===== Resumen =====
     logger.info("="*60)
     logger.info("RESUMEN DE UNIFICACIÓN")
     logger.info("="*60)
-    logger.info("📊 Total entradas únicas: %d", len(out_entries))
-    logger.info("🔄 Total duplicados eliminados: %d", len(dup_entries))
-    logger.info("📈 Total entradas procesadas: %d", len(out_entries) + len(dup_entries))
+    logger.info("Total entradas únicas: %d", len(out_entries))
+    logger.info("Total duplicados eliminados: %d", len(dup_entries))
+    logger.info("Total entradas procesadas: %d", len(out_entries) + len(dup_entries))
     
     # Estadísticas de match
     match_types = {}
@@ -377,7 +377,7 @@ def escribir_archivos(
         mt = row["match_type"]
         match_types[mt] = match_types.get(mt, 0) + 1
     
-    logger.info("\n📋 Estadísticas de emparejamiento:")
+    logger.info("\nEstadísticas de emparejamiento:")
     for mt, count in sorted(match_types.items()):
         logger.info("  - %s: %d", mt, count)
     logger.info("="*60)
@@ -431,7 +431,7 @@ def main():
         acm_entries_all.extend(leer_archivos_bib(acm_dir))
     
     # Fusionar y detectar duplicados
-    logger.info("\n🔄 Procesando unificación y detección de duplicados...")
+    logger.info("\nProcesando unificación y detección de duplicados...")
     merged_results, duplicate_entries, mapping_rows = unir_colecciones(
         ieee_entries, 
         acm_entries_all, 
@@ -439,7 +439,7 @@ def main():
     )
     
     # Escribir archivos
-    logger.info("\n💾 Escribiendo archivos...")
+    logger.info("\nEscribiendo archivos...")
     escribir_archivos(
         out_dir, 
         merged_results, 

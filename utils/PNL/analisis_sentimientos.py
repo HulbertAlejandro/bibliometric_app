@@ -226,7 +226,7 @@ class AnalizadorDeTendenciasTemporales:
         
         text_str = str(text)
         
-        # ✅ REEMPLAZAR COMAS POR PUNTO Y COMA
+        # REEMPLAZAR COMAS POR PUNTO Y COMA
         text_str = text_str.replace(',', ';')
         
         # Limpiar espacios múltiples y saltos de línea
@@ -262,7 +262,7 @@ class AnalizadorDeTendenciasTemporales:
                 **sentiment
             })
         
-        print(f"✅ Completado: {total}/{total} documentos procesados")
+        print(f"Completado: {total}/{total} documentos procesados")
         return pd.DataFrame(results)
     
     def plot_sentiment_evolution(self, df_results, date_column='date', output_path='static/salidas/sentiment_analysis'):
@@ -274,7 +274,7 @@ class AnalizadorDeTendenciasTemporales:
         # Verificar que hay datos de fecha válidos
         valid_dates = df_results[date_column].notna()
         if not valid_dates.any():
-            print("⚠️ No hay datos de fecha válidos para visualización temporal")
+            print("No hay datos de fecha válidos para visualización temporal")
             return
         
         df_filtered = df_results[valid_dates].copy()
@@ -283,7 +283,7 @@ class AnalizadorDeTendenciasTemporales:
         sentiment_by_date = df_filtered.groupby([date_column, 'final_label']).size().unstack(fill_value=0)
         
         if sentiment_by_date.empty:
-            print("⚠️ No hay suficientes datos para generar visualizaciones")
+            print("No hay suficientes datos para generar visualizaciones")
             return
         
         # Gráfico de líneas
@@ -319,7 +319,7 @@ class AnalizadorDeTendenciasTemporales:
         plt.savefig(f'{output_path}/sentiment_heatmap.png', dpi=300)
         plt.close()
         
-        print(f"✅ Visualizaciones guardadas en {output_path}")
+        print(f"Visualizaciones guardadas en {output_path}")
 
 
 def main_sentiment_analysis(bibtex_file='static/data/processed/merged.bib'):
@@ -338,13 +338,13 @@ def main_sentiment_analysis(bibtex_file='static/data/processed/merged.bib'):
         
         entries = bib_database.entries
         df = pd.DataFrame(entries)
-        print(f"\n✅ Cargados {len(df)} artículos desde {bibtex_file}")
+        print(f"\nCargados {len(df)} artículos desde {bibtex_file}")
         
         # Mostrar columnas disponibles
         print(f"📋 Columnas disponibles: {list(df.columns)}")
         
     except Exception as e:
-        print(f"❌ Error cargando BibTeX: {e}")
+        print(f"Error cargando BibTeX: {e}")
         return None
     
     # 2. Seleccionar columnas de texto y fecha
@@ -358,19 +358,19 @@ def main_sentiment_analysis(bibtex_file='static/data/processed/merged.bib'):
         text_column = 'title'
         print(f"📝 Usando 'title' como columna de texto")
     else:
-        print("❌ No se encontró columna 'abstract' ni 'title'")
+        print("No se encontró columna 'abstract' ni 'title'")
         return None
     
     # Fecha: priorizar year
     if 'year' in df.columns:
         date_column = 'year'
-        print(f"📅 Usando 'year' como columna de fecha")
+        print(f"Usando 'year' como columna de fecha")
     else:
         date_column = None
-        print("⚠️ No se encontró columna 'year', análisis temporal limitado")
+        print("No se encontró columna 'year', análisis temporal limitado")
     
     # 3. Análisis temporal de tendencias
-    print("\n📊 Analizando sentimientos...")
+    print("\nAnalizando sentimientos...")
     temporal_analyzer = AnalizadorDeTendenciasTemporales()
     
     df_results = temporal_analyzer.analyze_temporal_trends(
@@ -388,21 +388,21 @@ def main_sentiment_analysis(bibtex_file='static/data/processed/merged.bib'):
         index=False, 
         encoding='utf-8'
     )
-    print(f"\n✅ Resultados guardados en {output_dir}/resultados_sentimientos.csv")
+    print(f"\nResultados guardados en {output_dir}/resultados_sentimientos.csv")
     
     # 5. Estadísticas
-    print("\n📈 Estadísticas de Sentimiento:")
+    print("\nEstadísticas de Sentimiento:")
     sentiment_counts = df_results['final_label'].value_counts()
     print(sentiment_counts)
     print(f"\nTotal: {sentiment_counts.sum()} documentos")
     
     # Porcentajes
     sentiment_percentages = (sentiment_counts / sentiment_counts.sum() * 100).round(2)
-    print("\n📊 Distribución Porcentual:")
+    print("\nDistribución Porcentual:")
     for label, pct in sentiment_percentages.items():
         print(f"  {label}: {pct}%")
     
-    print("\n📊 Confianza Promedio por Sentimiento:")
+    print("\nConfianza Promedio por Sentimiento:")
     confidence_by_sentiment = df_results.groupby('final_label')['confidence'].mean()
     print(confidence_by_sentiment.round(4))
     
@@ -414,27 +414,27 @@ def main_sentiment_analysis(bibtex_file='static/data/processed/merged.bib'):
             output_path=output_dir
         )
     else:
-        print("\n⚠️ Sin columna de fecha, omitiendo visualizaciones temporales")
+        print("\nSin columna de fecha, omitiendo visualizaciones temporales")
     
     # 7. Topic Modeling (LDA)
-    print("\n🔍 Modelado de Tópicos (LDA)...")
+    print("\nModelado de Tópicos (LDA)...")
     documents = df[text_column].fillna('').astype(str).tolist()
     
     # Filtrar documentos muy cortos
     min_length = 10
     valid_docs = [doc for doc in documents if len(doc.strip()) >= min_length]
-    print(f"📄 Documentos válidos para LDA: {len(valid_docs)}/{len(documents)}")
+    print(f"Documentos válidos para LDA: {len(valid_docs)}/{len(documents)}")
     
     if len(valid_docs) < 10:
-        print("⚠️ Pocos documentos válidos para LDA, omitiendo modelado de tópicos")
+        print("Pocos documentos válidos para LDA, omitiendo modelado de tópicos")
     else:
         topic_model = ModeloDeTopicos(n_topics=5)
         topic_model.fit_lda(valid_docs)
         topics = topic_model.get_topics(n_words=10)
         
-        print("\n📚 Tópicos Identificados:")
+        print("\nTópicos Identificados:")
         for topic in topics:
-            print(f"\n🏷️  Tópico {topic['topic_id']}:")
+            print(f"\nTópico {topic['topic_id']}:")
             print(f"   Palabras clave: {', '.join(topic['words'][:8])}")
         
         # Guardar tópicos
@@ -455,17 +455,17 @@ def main_sentiment_analysis(bibtex_file='static/data/processed/merged.bib'):
                 df_results.loc[valid_indices[i], 'dominant_topic'] = topic_id
         
         df_results.to_csv(f'{output_dir}/sentiment_results_with_topics.csv', index=False, encoding='utf-8')
-        print(f"✅ Resultados con tópicos guardados")
+        print(f"Resultados con tópicos guardados")
     
     # 8. Resumen final
     print("\n" + "="*80)
     print("RESUMEN DEL ANÁLISIS")
     print("="*80)
-    print(f"📊 Total de documentos analizados: {len(df_results)}")
-    print(f"✅ Positivos: {sentiment_counts.get('positive', 0)} ({sentiment_percentages.get('positive', 0)}%)")
-    print(f"⚖️  Neutrales: {sentiment_counts.get('neutral', 0)} ({sentiment_percentages.get('neutral', 0)}%)")
-    print(f"❌ Negativos: {sentiment_counts.get('negative', 0)} ({sentiment_percentages.get('negative', 0)}%)")
-    print(f"\n📁 Resultados completos en: {output_dir}/")
+    print(f"Total de documentos analizados: {len(df_results)}")
+    print(f"Positivos: {sentiment_counts.get('positive', 0)} ({sentiment_percentages.get('positive', 0)}%)")
+    print(f"Neutrales: {sentiment_counts.get('neutral', 0)} ({sentiment_percentages.get('neutral', 0)}%)")
+    print(f"Negativos: {sentiment_counts.get('negative', 0)} ({sentiment_percentages.get('negative', 0)}%)")
+    print(f"\nResultados completos en: {output_dir}/")
     print("="*80)
     
     return df_results
